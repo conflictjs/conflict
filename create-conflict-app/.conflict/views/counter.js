@@ -1,4 +1,4 @@
-import { View } from '../../djsx.js';
+import { View } from '../../conflict/view.js';
 import Button from './button.js';
 import ComponentRow from './componentrow.js';
 export default function Counter(number) {

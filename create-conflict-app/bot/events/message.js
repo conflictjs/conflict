@@ -1,5 +1,5 @@
-import { onMessage } from 'conflict/events';
+import { onMessageCreate } from '../../conflict/events.js';
 
-onMessage(message => {
+onMessageCreate(message => {
     if (message.content === "hello") message.channel.send(":wave: Hey there!");
 });

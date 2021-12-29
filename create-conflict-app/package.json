@@ -4,9 +4,9 @@
   "description": "description",
   "main": "index.js",
   "scripts": {
-    "build": "npx babel bot --out-dir .djsx",
+    "build": "npx babel bot --out-dir .conflict",
     "dev": "node dev.js",
-    "start": "node .djsx/.conflict.js"
+    "start": "node conflict/ep.js"
   },
   "author": "YodaLightsabr",
   "type": "module",

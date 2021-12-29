@@ -1,4 +1,4 @@
-import { View } from '../../conflict/view';
+import { View } from '../../conflict/view.js';
 
 export default function ComponentRow ({ children }) {
     return (

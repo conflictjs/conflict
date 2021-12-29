@@ -1,4 +1,4 @@
-import { View } from '../../conflict/view';
+import { View } from '../../conflict/view.js';
 
 export default function Button (props) {
     const { style, children, label, custom_id, url } = props;

@@ -1,4 +1,4 @@
-import { View } from '../../djsx.js';
+import { View } from '../../conflict/view.js';
 export default function ButtonRow() {
   return View.createElement("components", null, View.createElement("component", {
     type: 1

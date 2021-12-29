@@ -1,4 +1,4 @@
-import { View } from '../../djsx.js';
+import { View } from '../../conflict/view.js';
 export default new View(View.createElement("message", null, View.createElement("embeds", null, View.createElement("embed", {
   color: "#ff3333",
   image: {

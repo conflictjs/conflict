@@ -1,9 +1,9 @@
 import { useState } from '../../conflict/hooks';
-import { View } from '../../conflict/view';
+import { View } from '../../';
 import Button from './button.js';
 import ComponentRow from './componentrow.js';
 
-export default function Counter (number) {
+export default function Counter () {
     const [number, setNumber, numberCallback] = useState(0);
     return new View(
         <message>
