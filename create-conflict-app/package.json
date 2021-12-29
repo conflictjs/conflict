@@ -1,0 +1,27 @@
+{
+  "name": "create-conflict-app",
+  "version": "0.1.0",
+  "description": "description",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx babel bot --out-dir .djsx",
+    "dev": "node dev.js",
+    "start": "node .djsx/.conflict.js"
+  },
+  "author": "YodaLightsabr",
+  "type": "module",
+  "dependencies": {
+    "@babel/parser": "^7.16.6",
+    "@babel/plugin-transform-react-jsx": "^7.16.5",
+    "@babel/preset-react": "^7.16.5",
+    "babel": "^6.23.0",
+    "discord.js": "^13.3.1",
+    "esm-dirname": "^0.1.1",
+    "stump.js": "^1.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5"
+  }
+}
