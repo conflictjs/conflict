@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx babel bot --out-dir .conflict",
-    "dev": "node dev.js",
+    "dev": "node conflict/devserver/index.js",
     "start": "node conflict/ep.js"
   },
   "author": "YodaLightsabr",
