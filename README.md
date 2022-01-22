@@ -1,5 +1,6 @@
 # Conflict
 The JavaScript framework for Discord bots
+![Conflict logo, in a rounded font with a blue and green background](https://conflictframework.repl.co/conflict.svg)
 
 > This project is under development and currently will not run.
 
