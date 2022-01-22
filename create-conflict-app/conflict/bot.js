@@ -20,7 +20,7 @@ client.on('ready', () => {
 client.login(token);
 
 async function initEvents () {
-    let eventsPath = path.join(__dirname, '..', 'bot', 'events');
+    let eventsPath = path.join(__dirname, '..', '.conflict', 'events');
     if (fs.existsSync(eventsPath)) {
         let files = fs.readdirSync(eventsPath);
         let filePaths = files.map(file => path.join(eventsPath, file));
