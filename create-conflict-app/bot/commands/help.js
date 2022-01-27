@@ -1,10 +1,13 @@
-import Command from 'conflict/command';
+import Command from '../../conflict/commands';
 
 export default new Command({
-    name: '/help',
+    name: 'help',
     description: 'Get help',
     options: [],
-    execute: async (command, options, api) => {
+    testing: {
+        guildId: ''
+    },
+    execute: async (command, options, utils) => {
         command.respond("Well, this isn't really helpful.");
     }
 });

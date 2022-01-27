@@ -30,4 +30,30 @@ async function initEvents () {
     }    
 }
 
-initEvents();
+let commands = {};
+
+async function initCommands () {
+    let commandsPath = path.join(__dirname, '..', '.conflict', 'commands');
+    if (fs.existsSync(commandsPath)) {
+        let files = fs.readdirSync(commandsPath);
+        let filePaths = files.map(file => path.join(commandsPath, file));
+        for (const file of filePaths) {
+            if (file.endsWith('.js') || file.endsWith('.cjs') || file.endsWith('.mjs')) {
+                let fileData = await import(file);
+
+                if (fileData.default && fileData instanceof Command) {
+                    let command = fileData.default;
+                    commands[command.name] = command;
+                }
+            }
+        }
+    }
+    console.log('Commands', commands);
+}
+
+async function init () {
+    await initEvents();
+    await initCommands();
+}
+
+init();
