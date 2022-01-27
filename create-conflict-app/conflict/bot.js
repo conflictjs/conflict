@@ -70,7 +70,6 @@ async function initCommands () {
             });
         }
     }
-    console.log('Commands', publicCommands, guildCommands);
     await client.api.applications(client.user.id).commands.put({
         data: publicCommands
     });
@@ -86,7 +85,7 @@ async function initCommands () {
             if (commands[interaction.commandName]) {
                 let command = commands[interaction.commandName];
                 try {
-                    let output = command.execute(new InteractionResponse(interaction));
+                    let output = await command.execute(new InteractionResponse(interaction));
                     if (output instanceof Promise) output = await output;
                 } catch (err) {
                     console.error(err);
