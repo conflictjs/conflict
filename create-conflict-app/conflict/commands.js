@@ -1,3 +1,5 @@
+import View from './view.js'
+
 export default class Command {
     constructor ({ name, description, options, execute, meta, testing }) {
         this.name = name;
@@ -78,6 +80,17 @@ export class InteractionResponse {
     }
     reply (options) {
         return this.interaction.reply(options);
+    }
+    respond (options) {
+        return this.interaction.reply(options);
+    }
+    view (view) {
+        if (!view instanceof View) return;
+        console.log(JSON.stringify(view, null, 4));
+        return this.interaction.reply(view);
+    }
+    sendView (options) {
+        this.view(options);
     }
     update (options) {
         if (this.interaction.update) return this.interaction.update(options);
