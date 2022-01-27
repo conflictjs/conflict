@@ -1,10 +1,10 @@
 import { View } from '../../conflict/view.js';
 export default function ButtonRow() {
-  return View.createElement("components", null, View.createElement("component", {
+  return (typeof View !== 'undefined' ? View.createElement : command.getView().createElement)("components", null, (typeof View !== 'undefined' ? View.createElement : command.getView().createElement)("component", {
     type: 1
-  }, View.createElement("components", null, View.createElement("component", {
+  }, (typeof View !== 'undefined' ? View.createElement : command.getView().createElement)("components", null, (typeof View !== 'undefined' ? View.createElement : command.getView().createElement)("component", {
     type: 2,
     style: 5,
     url: "https://google.com"
-  }, View.createElement("label", null, "Click me!")))));
+  }, (typeof View !== 'undefined' ? View.createElement : command.getView().createElement)("label", null, "Click me!")))));
 }

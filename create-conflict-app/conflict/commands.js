@@ -84,13 +84,16 @@ export class InteractionResponse {
     respond (options) {
         return this.interaction.reply(options);
     }
+    getView () {
+        return View;
+    }
     view (view) {
+        return this.interaction.reply(new View(view));
+    }
+    sendView (options) {
         if (!view instanceof View) return;
         console.log(JSON.stringify(view, null, 4));
         return this.interaction.reply(view);
-    }
-    sendView (options) {
-        this.view(options);
     }
     update (options) {
         if (this.interaction.update) return this.interaction.update(options);
