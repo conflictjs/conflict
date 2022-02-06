@@ -1,4 +1,4 @@
-import { View } from '../../conflict/view.js';
+import { View } from 'conflict.js/view';
 export default new View((typeof View !== 'undefined' ? View.createElement : command.getView().createElement)("message", null, (typeof View !== 'undefined' ? View.createElement : command.getView().createElement)("embeds", null, (typeof View !== 'undefined' ? View.createElement : command.getView().createElement)("embed", {
   color: "#ff3333",
   image: {

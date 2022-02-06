@@ -1,5 +1,5 @@
-import { useState } from '../../conflict/hooks';
-import { View } from '../../';
+import { useState } from 'conflict.js/hooks';
+import { View } from 'conflict.js/view';
 import Button from './button.js';
 import ComponentRow from './componentrow.js';
 

@@ -29,7 +29,7 @@ const __dirname = dirname(import.meta);
     client.login(token);
 
     async function initEvents () {
-        let eventsPath = path.join(__dirname, '..', '.conflict', 'events');
+        let eventsPath = path.join(process.cwd(), '.conflict', 'events');
         if (fs.existsSync(eventsPath)) {
             let files = fs.readdirSync(eventsPath);
             let filePaths = files.map(file => path.join(eventsPath, file));

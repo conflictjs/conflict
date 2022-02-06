@@ -1,4 +1,4 @@
-import { onMessageCreate } from '../../conflict/events.js';
+import { onMessageCreate } from 'conflict.js/events';
 import Welcome from '../views/welcome.js';
 
 onMessageCreate(message => {

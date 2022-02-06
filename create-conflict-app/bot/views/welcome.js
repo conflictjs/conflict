@@ -1,4 +1,4 @@
-import { View } from '../../conflict/view.js'
+import { View } from 'conflict.js/view';
 
 let phrases = [
     "Discord Bots",

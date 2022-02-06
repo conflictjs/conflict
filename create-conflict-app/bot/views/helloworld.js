@@ -1,4 +1,4 @@
-import { View } from '../../conflict/view.js';
+import { View } from 'conflict.js/view';
 
 export default new View(
     <message>

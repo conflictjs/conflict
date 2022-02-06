@@ -1,4 +1,4 @@
-import { View } from '../../conflict/view.js';
+import { View } from 'conflict.js/view';
 import Button from './button.js';
 import ComponentRow from './componentrow.js';
 
