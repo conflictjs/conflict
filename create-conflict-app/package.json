@@ -11,7 +11,7 @@
   "author": "YodaLightsabr",
   "type": "module",
   "dependencies": {
-    "discord.js": "^13.3.1",
+    "discord.js": "^13.6.0",
     "esm-dirname": "^0.1.1",
     "stump.js": "^1.1.0"
   },
@@ -19,8 +19,8 @@
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.5",
     "@babel/parser": "^7.16.6",
-    "@babel/preset-react": "^7.16.5",
     "@babel/plugin-transform-react-jsx": "^7.16.5",
-    "@babel/preset-env": "^7.16.5"
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-react": "^7.16.5"
   }
 }
