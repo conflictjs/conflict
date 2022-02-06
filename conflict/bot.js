@@ -5,7 +5,6 @@ import fs from 'fs'
 import stump from './logger.js'
 import { _setClient, onInteractionCreate } from './events.js'
 import Command, { InteractionResponse } from './commands.js'
-const __dirname = dirname(import.meta);
 
 (async () => {
 
@@ -95,6 +94,7 @@ const __dirname = dirname(import.meta);
                         let output = await command.execute(new InteractionResponse(interaction));
                         if (output instanceof Promise) output = await output;
                     } catch (err) {
+
                         console.error(err);
                         try {
                             interaction.reply({ embeds: [
