@@ -10,3 +10,11 @@ export function useState (defaultValue) {
     }
     return [value, setValue, callback];
 }
+
+export function deleteAfter (time = 5000) { // Called when creating the view
+    return function (message, view) { // Called after message is sent
+        setTimeout(() => {
+            message.delete();
+        }, time);
+    }
+}

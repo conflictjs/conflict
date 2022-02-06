@@ -20,10 +20,10 @@ global.__ConflictViewParser = View.createElement;
 
 (async () => {
 
-    TextChannel.prototype.view = view => view.applyTo(this.send);
-    DMChannel.prototype.view = view => view.applyTo(this.send);
-    NewsChannel.prototype.view = view => view.applyTo(this.send);
-    ThreadChannel.prototype.view = view => view.applyTo(this.send);
+    TextChannel.prototype.view = function (view) { view.applyTo(this); };
+    DMChannel.prototype.view = function (view) { view.applyTo(this); };
+    NewsChannel.prototype.view = function (view) { view.applyTo(this); };
+    ThreadChannel.prototype.view = function (view) { view.applyTo(this); };
 
     let config;
     try {

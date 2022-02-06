@@ -1,4 +1,5 @@
 import Discord from 'discord.js';
+import stump from './logger.js';
 
 export const createElement = (tag, props = {}, ...children) => {
     if (props == null) props = {};
@@ -45,11 +46,11 @@ export const parseView = (input) => {
 
     let keys = Object.keys(object);
     if (keys.length == 1 && keys[0] === 'embed' && tag === 'embeds') object = object[keys[0]];
-    console.log('isComponent', keys.length == 1 && keys[0] === 'component' && tag === 'components');
+    //console.log('isComponent', keys.length == 1 && keys[0] === 'component' && tag === 'components');
     if (keys.length == 1 && keys[0] === 'component' && tag === 'components') object = [object[keys[0]]];
-    console.log(object);
+    //console.log(object);
     if (object.components && object.components[0]) {
-        console.log(object.components[0])
+        //console.log(object.components[0])
     }
     return object;
 }
@@ -61,9 +62,18 @@ export class View {
         for (const key in parsed) {
             this[key] = parsed[key];
         }
-        this.applyTo = async function (fn) {
-            let output = fn(this);
-            if (output instanceof Promise) await output;
+        this.callback = async function (message) {
+            if (message instanceof Discord.Message) {
+                let hooks = $hooks;
+                for (const hook of hooks) {
+                    hook(output, this);
+                }
+            }
+        }
+        this.applyTo = async function (channel) {
+            let output = channel.send(this);
+            if (output instanceof Promise) output = await output;
+            console.log(output, output instanceof Discord.Message);
             if (output instanceof Discord.Message) {
                 let hooks = $hooks;
                 for (const hook of hooks) {
@@ -73,6 +83,11 @@ export class View {
         }
         this.applyHooks = function (...hooks) {
             $hooks.push(...hooks);
+            return this;
+        }
+        this.useHooks = function (...hooks) {
+            $hooks.push(...hooks);
+            return this;
         }
     }
     static createElement (tag, props = {}, ...children) {

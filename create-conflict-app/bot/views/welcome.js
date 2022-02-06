@@ -1,4 +1,5 @@
 import { View } from 'conflict.js/view';
+import { deleteAfter } from 'conflict.js/hooks';
 
 let phrases = [
     "Discord Bots",
@@ -21,5 +22,5 @@ export default function () {
                 </embed>
             </embeds>
         </message>
-    )
+    ).useHooks(deleteAfter(5000));
 }
