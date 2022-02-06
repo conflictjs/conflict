@@ -1,12 +1,29 @@
-import Discord, { Client, Intents, Message, MessageEmbed } from 'discord.js'
+import Discord, {
+    Client,
+    Intents,
+    Message,
+    MessageEmbed,
+    TextChannel,
+    DMChannel,
+    NewsChannel,
+    ThreadChannel
+} from 'discord.js'
 import { dirname } from "esm-dirname"
 import path from 'path'
 import fs from 'fs'
 import stump from './logger.js'
 import { _setClient, onInteractionCreate } from './events.js'
 import Command, { InteractionResponse } from './commands.js'
+import View from './view.js'
+
+global.__ConflictViewParser = View.createElement;
 
 (async () => {
+
+    TextChannel.prototype.view = view => view.applyTo(this.send);
+    DMChannel.prototype.view = view => view.applyTo(this.send);
+    NewsChannel.prototype.view = view => view.applyTo(this.send);
+    ThreadChannel.prototype.view = view => view.applyTo(this.send);
 
     let config;
     try {
