@@ -6,7 +6,11 @@
 # Conflict
 The JavaScript UI framework for Discord bots
 
-> This project is under development and will likely not run as expected. Please do not use in a production environment.
+> ## **Status update:** New updates every **`📆 weekend`**
+--------
+> ### ⚠️ This project is under development and will likely not run as expected. Please do not use in a production environment.
+
+
 
 ## What is Conflict?
 Conflict aims to be the best JavaScript framework for making Discord bots. Most frameworks are composed of classes and based on events and functions. Conflict is different. Conflict sets up a directory structure to handle every challenging aspect of making a Discord bot, including command registration, command handling, UI structuring, events, storage, state, and even sharding. Under the hood, it's just Discord.js with superpowers.
