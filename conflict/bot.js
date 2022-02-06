@@ -45,7 +45,7 @@ global.__ConflictViewParser = View.createElement;
     client.login(token);
 
     async function initEvents () {
-        let eventsPath = path.join(process.cwd(), '.conflict', 'events');
+        let eventsPath = path.join(process.cwd(), '.conflict', 'build', 'events');
         if (fs.existsSync(eventsPath)) {
             let files = fs.readdirSync(eventsPath);
             let filePaths = files.map(file => path.join(eventsPath, file));
@@ -58,7 +58,12 @@ global.__ConflictViewParser = View.createElement;
     let commands = {};
 
     async function initCommands () {
-        let commandsPath = path.join(process.cwd(), '.conflict', 'commands');
+        let previousGuilds = [];
+        if (fs.existsSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'))) {
+            previousGuilds = fs.readFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), 'utf8').split('^');
+        }
+
+        let commandsPath = path.join(process.cwd(), '.conflict', 'build', 'commands');
         if (fs.existsSync(commandsPath)) {
             let files = fs.readdirSync(commandsPath);
             let filePaths = files.map(file => path.join(commandsPath, file));
@@ -76,10 +81,13 @@ global.__ConflictViewParser = View.createElement;
 
         let publicCommands = [];
         let guildCommands = {};
+        let guilds = [];
+
         for (const command in commands) {
             let commandData = commands[command];
             if (commandData.testing && commandData.testing.guildId) {
                 if (!guildCommands[commandData.testing.guildId]) guildCommands[commandData.testing.guildId] = [];
+                guilds.push(commandData.testing.guildId);
                 guildCommands[commandData.testing.guildId].push({
                     name: commandData.name,
                     description: commandData.description,
@@ -93,6 +101,14 @@ global.__ConflictViewParser = View.createElement;
                 });
             }
         }
+
+        previousGuilds = previousGuilds.filter(guild => !guilds.includes(guild));
+        for (const guild of previousGuilds) {
+            await client.api.applications(client.user.id).guilds(guild).commands.put({ data: [] });
+        }
+
+        fs.writeFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), guilds.join('^'), 'utf8');
+
         await client.api.applications(client.user.id).commands.put({
             data: publicCommands
         });

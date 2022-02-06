@@ -28,7 +28,7 @@ process.argv.shift();
         await import(__dirname + '/devserver/index.js');
     } else if (process.argv[0] == 'build') {
         stump.info('Starting build...');
-        exec('npx babel bot --out-dir .conflict', { cwd: process.cwd() }, (error, stdout, stderr) => {
+        exec('npx babel bot --out-dir .conflict/build', { cwd: process.cwd() }, (error, stdout, stderr) => {
             if (error) return stump.error(error);
             stdout.trim().split('\n').filter(line => line).forEach(line => stump.info(line));
             stderr = stderr.trim().split('\n').filter(line => line);

@@ -4,7 +4,7 @@
   "description": "description",
   "main": "index.js",
   "scripts": {
-    "build": "npx babel bot --out-dir .conflict",
+    "build": "npx babel bot --out-dir .conflict/build",
     "dev": "node conflict/devserver/index.js",
     "start": "node conflict/ep.js"
   },
