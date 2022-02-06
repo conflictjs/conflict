@@ -6,6 +6,21 @@
 # Conflict
 The JavaScript UI framework for Discord bots
 
+[![
+    Discord badge
+](
+    https://img.shields.io/discord/921962253262155876?color=%235865f2&label=%20&logo=Discord&logoColor=white
+)](
+    https://discord.gg/jCgArsS7ub
+)
+[![
+    GitHub badge
+](
+    https://img.shields.io/github/last-commit/yodalightsabr/conflict?color=%23222&label=%20%20%20&logo=GitHub&logoColor=white
+)](
+    https://github.com/yodalightsabr/conflict
+)
+
 > ## **Status update:** New updates every **`📆 weekend`**
 --------
 > ### ⚠️ This project is under development and will likely not run as expected. Please do not use in a production environment.
