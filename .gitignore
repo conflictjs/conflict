@@ -1,4 +1,5 @@
 create-conflict-app/node_modules
 create-conflict-app/.conflict
 create-conflict-app/conflict.config.js
+conflict/node_modules
 ignore

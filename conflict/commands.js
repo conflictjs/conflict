@@ -100,3 +100,5 @@ export class InteractionResponse {
         return this.reply(options);
     }
 }
+
+export { Command };

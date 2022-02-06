@@ -1,11 +1,8 @@
 import { spawn, exec } from 'child_process';
 import chalk from 'chalk';
-import { dirname } from "esm-dirname"
-import path from 'path'
 import { stdin } from 'process';
-const __dirname = dirname(import.meta);
-let projectDirectory = path.join(__dirname, '..', '..');
-const build = exec('npm run build', { cwd: projectDirectory }, () => {
+let projectDirectory = process.cwd();
+const build = exec('npx babel bot --out-dir .conflict', { cwd: projectDirectory }, () => {
   const babel = spawn('npx', 'babel bot --out-dir .conflict --watch'.split(' '), { cwd: projectDirectory });
   babel.stdout.setEncoding('utf8');
   babel.stderr.setEncoding('utf8');
@@ -19,7 +16,7 @@ const build = exec('npm run build', { cwd: projectDirectory }, () => {
     console.log(`Babel exited with code ${code}`);
   });
   function spawnRunner () {
-    const runner = spawn('npm', 'run start'.split(' '), { stdio: ['pipe', 'pipe', 'pipe'], env: process.env, cwd: projectDirectory });
+    const runner = spawn('npx', 'conflict'.split(' '), { stdio: ['pipe', 'pipe', 'pipe'], env: process.env, cwd: projectDirectory });
     runner.stdout.setEncoding('utf8');
     runner.stderr.setEncoding('utf8');
     runner.stdout.on('data', (chunk) => {

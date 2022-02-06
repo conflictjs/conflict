@@ -1,6 +1,4 @@
-import Command from '../../conflict/commands.js';
-import ActionRow from '../components/ActionRow.js';
-import Button from '../components/Button.js';
+import Command from 'conflict.js/commands';
 
 export default new Command({
     name: 'help',
