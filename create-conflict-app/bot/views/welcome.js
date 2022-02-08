@@ -1,5 +1,5 @@
-import { View } from 'conflict.js/view';
-import { deleteAfter } from 'conflict.js/hooks';
+import { View } from '@conflict/beta/view';
+import { deleteAfter } from '@conflict/beta/hooks';
 
 let phrases = [
     "Discord Bots",

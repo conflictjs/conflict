@@ -1,19 +1,17 @@
 {
-  "name": "create-conflict-app",
+  "name": "my-conflict-app",
   "version": "0.1.0",
-  "description": "description",
+  "description": "A brand new project created with create-conflict-app",
   "main": "index.js",
   "scripts": {
-    "build": "npx babel bot --out-dir .conflict/build",
-    "dev": "node conflict/devserver/index.js",
-    "start": "node conflict/ep.js"
+    "build": "conflict build",
+    "dev": "conflict dev",
+    "start": "conflict"
   },
-  "author": "YodaLightsabr",
+  "author": "Conflict.js",
   "type": "module",
   "dependencies": {
-    "discord.js": "^13.6.0",
-    "esm-dirname": "^0.1.1",
-    "stump.js": "^1.1.0"
+    "@conflict/beta": "^0.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",

@@ -1,4 +1,4 @@
-import Command from 'conflict.js/commands';
+import Command from '@conflict/beta/commands';
 
 export default new Command({
     name: 'help',

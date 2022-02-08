@@ -1,5 +1,5 @@
 {
-  "name": "conflict.js",
+  "name": "@conflict/beta",
   "version": "0.0.1",
   "description": "The first and only UI framework for Discord bots",
   "main": "exports.js",
@@ -33,6 +33,7 @@
   "exports": {
     "./View": "./view.js",
     "./view": "./view.js",
+    "./views": "./view.js",
     "./events": "./events.js",
     "./hooks": "./hooks.js",
     "./logger": "./logger.js",
