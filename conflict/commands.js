@@ -11,7 +11,7 @@ export default class Command {
         this.executeFn = execute;
     }
     execute (command, options, utils) {
-        this.executeFn(command, options, utils);
+        return this.executeFn(command, options, utils);
     }
 }
 

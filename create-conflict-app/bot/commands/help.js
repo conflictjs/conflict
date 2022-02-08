@@ -8,6 +8,7 @@ export default new Command({
         guildId: '921962253262155876'
     },
     execute: async (command, options, utils) => {
+        throw new Error("Testserror");
         command.view(
             <message>
                 <embeds>

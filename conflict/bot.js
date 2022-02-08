@@ -31,7 +31,7 @@ global.__ConflictViewParser = View.createElement;
     } catch (err) {
         return stump.error('Missing conflict.config.js');
     }
-    const { token, intents } = config.default;
+    const { token, intents, errorHandler } = config.default;
 
     const client = new Client({ intents: (intents || ["GUILD_MESSAGES"]).map(intent => Intents.FLAGS[intent] ) });
 
@@ -130,6 +130,7 @@ global.__ConflictViewParser = View.createElement;
 
                         console.error(err);
                         try {
+                            if (errorHandler) return errorHandler(err, interaction);
                             interaction.reply({ embeds: [
                                 new MessageEmbed()
                                     .setColor('#ff4444')
@@ -138,6 +139,7 @@ global.__ConflictViewParser = View.createElement;
                                     .setTimestamp()
                             ] });
                         } catch (nestedErr) {
+                            if (errorHandler) return errorHandler(err, interaction);
                             interaction.channel.send(
                                 new MessageEmbed()
                                     .setColor('#ff4444')
