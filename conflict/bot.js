@@ -156,6 +156,15 @@ global.__ConflictViewParser = View.createElement;
                             .setTimestamp()
                     ] });
                 }
+            } else {
+                let { customId } = interaction;
+                interaction.reply({ embeds: [
+                    new MessageEmbed()
+                        .setColor('#ff4444')
+                        .setTitle('Feature in Development')
+                        .setDescription('```' + `Conflict Erorr: FeatureNotReady\n    at ${customId}.component:1:1` + '```')
+                        .setTimestamp()
+                ] });
             }
         });
     }
