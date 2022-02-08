@@ -24,7 +24,9 @@ The JavaScript UI framework for Discord bots
 > ## **Status update:** New updates every **`📆 weekend`**
 --------
 > ### ⚠️ This project is under development and will likely not run as expected. Please do not use in a production environment.
-
+--------
+Get started by running `npx create-conflict-app`
+--------
 
 
 ## What is Conflict?
