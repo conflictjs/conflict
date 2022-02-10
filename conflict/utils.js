@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 export function uuid () {
     let time = new Date().getTime();
     let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, character => {
@@ -7,6 +10,7 @@ export function uuid () {
     });
     return uuid;
 }
+
 export function queryString (url, name) {
     name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
     var regexS = "[\\?&]"+name+"=([^&#]*)";
@@ -16,4 +20,35 @@ export function queryString (url, name) {
         return "";
     else
         return results[1];
+}
+
+export function getFile (error) {
+    let stackTrace = error.stack.split('\n')[1].split('(')[1].split(')')[0];
+    let lastColon = stackTrace.lastIndexOf(':');
+    let col = stackTrace.substring(lastColon + 1);
+    let filePath = stackTrace.substring(0, lastColon);
+    lastColon = filePath.lastIndexOf(':');
+    let line = +filePath.substring(lastColon + 1);
+    filePath = filePath.substring(0, lastColon);
+    if (filePath.startsWith('file://')) filePath = filePath.substring(7);
+    const fileData = fs.readFileSync(filePath, 'utf8');
+    let snippet = fileData.split('\n').slice(line - 4, line + 2).join('\n');
+    let lines = snippet.split('\n');
+    if (lines.length < 5) {
+        snippet = snippet;
+    } else {
+        lines = [
+            '// ' + path.basename(filePath) + ':' + (line - 3),
+            lines[0],
+            lines[1],
+            lines[2],
+            lines[3],
+            '//' + ' '.repeat(col - 3) + '^ ' + error.split('\n')[0] + ' (:' + line + ':' + col + ')',
+            lines[4],
+            lines[5],
+            lines[6]
+        ];
+        snippet = lines.join('\n');
+    }
+    return "```js\n" + snippet + "```";
 }

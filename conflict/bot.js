@@ -15,6 +15,8 @@ import stump from './logger.js'
 import { _setClient, onInteractionCreate } from './events.js'
 import Command, { InteractionResponse } from './commands.js'
 import View from './view.js'
+import State from './state.js'
+import { getFile } from './utils.js'
 
 global.__ConflictViewParser = View.createElement;
 
@@ -131,11 +133,12 @@ global.__ConflictViewParser = View.createElement;
                         console.error(err);
                         try {
                             if (errorHandler) return errorHandler(err, interaction);
+                            const file = getFile(err);
                             interaction.reply({ embeds: [
                                 new MessageEmbed()
                                     .setColor('#ff4444')
                                     .setTitle('Command Error')
-                                    .setDescription('```' + err.stack + '```')
+                                    .setDescription(file + ' ```' + err.stack + '```')
                                     .setTimestamp()
                             ] });
                         } catch (nestedErr) {

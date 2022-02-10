@@ -10,9 +10,6 @@
   },
   "author": "Conflict.js",
   "type": "module",
-  "dependencies": {
-    "@conflict/beta": "^0.1.1"
-  },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.5",
@@ -20,5 +17,8 @@
     "@babel/plugin-transform-react-jsx": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5"
+  },
+  "dependencies": {
+    "@conflict/beta": "^0.1.5"
   }
 }
