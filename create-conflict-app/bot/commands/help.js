@@ -18,7 +18,7 @@ export default new Command({
                     </embed>
                 </embeds>
                 <ActionRow>
-                    <Button onclick={(interaction) => interaction.respond('I was clicked!')}>Hello there!</Button>
+                    <Button onclick={(event) => event.respond(`<@${event.author.id}> clicked the button!`)}>Click Me</Button>
                 </ActionRow>
             </message>
         );
