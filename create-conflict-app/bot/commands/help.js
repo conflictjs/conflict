@@ -1,4 +1,5 @@
 import Command from '@conflict/beta/commands';
+import { Button, ActionRow } from '@conflict/beta/components';
 
 export default new Command({
     name: 'help',
@@ -8,7 +9,6 @@ export default new Command({
         guildId: '921962253262155876'
     },
     execute: async (command, options, utils) => {
-        throw new Error("Testserror");
         command.view(
             <message>
                 <embeds>
@@ -17,6 +17,9 @@ export default new Command({
                         <description>Welcome to **Conflict**.</description>
                     </embed>
                 </embeds>
+                <ActionRow>
+                    <Button onclick={(interaction) => interaction.respond('I was clicked!')}>Hello there!</Button>
+                </ActionRow>
             </message>
         );
     }

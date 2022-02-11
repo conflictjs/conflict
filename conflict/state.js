@@ -1,11 +1,4 @@
 import { uuid, queryString } from './utils.js'
-const managers = {
-    command: new StateManager('command'),
-    guild: new StateManager('guild'),
-    user: new StateManager('user'),
-    kv: new StateManager('kv'),
-    components: new ComponentManager('components'),
-};
 class StateManager {
     constructor (type) {
         this.type = type;
@@ -14,6 +7,7 @@ class StateManager {
     select (item) {
         if (this.items[item]) return this.items[item];
         this.items[item] = new State(item, this.type);
+        return this.items[item];
     }
     drop (item) {
         if (this.items[item]) delete this.items[item];
@@ -26,6 +20,7 @@ class ComponentManager extends StateManager {
     select (item) {
         if (this.items[item]) return this.items[item];
         this.items[item] = new ComponentState(item, this.type);
+        return this.items[item];
     }
 }
 class State {
@@ -68,14 +63,22 @@ class ComponentState extends State {
     }
     store (code) {
         let id = uuid();
-        let queryString = 'c?type=code&id:' + encodeURIComponent(id);
+        let queryString = 'c?type=code&id=' + encodeURIComponent(id);
         this.set(id, code);
         return queryString;
     }
     fetch (url) {
-        let id = decodeURIComponent(queryString('https://conflict.local/' + url, id));
+        let id = decodeURIComponent(queryString('https://conflict.local/' + url, 'id'));
         return this.get(id);
     }
 }
 
-export { State as default, State }
+const managers = {
+    command: new StateManager('command'),
+    guild: new StateManager('guild'),
+    user: new StateManager('user'),
+    kv: new StateManager('kv'),
+    components: new ComponentManager('components'),
+};
+
+export { State as default, State, managers }

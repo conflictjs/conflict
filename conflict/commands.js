@@ -18,18 +18,20 @@ export default class Command {
 export class InteractionResponse {
     constructor (interaction) {
         this.interaction = interaction;
-        let optionsArray = interaction.options.data;
-        let options = {};
-        let rawOptions = {};
+        if (interaction.options) {
+            let optionsArray = interaction.options.data;
+            let options = {};
+            let rawOptions = {};
 
-        for (const option of optionsArray) {
-            options[option.name] = option.value;
-            rawOptions[option.name] = option;
+            for (const option of optionsArray) {
+                options[option.name] = option.value;
+                rawOptions[option.name] = option;
+            }
+
+            this.options = options;
+            this.rawOptions = rawOptions;
+        
         }
-
-        this.options = options;
-        this.rawOptions = rawOptions;
-
         this.user = interaction.user;
         this.id = interaction.id;
         this.guild = interaction.guild;

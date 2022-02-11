@@ -39,7 +39,9 @@
     "./logger": "./logger.js",
     "./commands": "./commands.js",
     "./utils": "./utils.js",
-    "./state": "./state.js"
+    "./state": "./state.js",
+    "./components": "./components.js",
+    "./Components": "./components.js"
   },
   "type": "module"
 }

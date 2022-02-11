@@ -12,13 +12,15 @@ import { dirname } from "esm-dirname"
 import path from 'path'
 import fs from 'fs'
 import stump from './logger.js'
-import { _setClient, onInteractionCreate } from './events.js'
+import { _setClient, onInteractionCreate, onDebug, onReady } from './events.js'
 import Command, { InteractionResponse } from './commands.js'
 import View from './view.js'
-import State from './state.js'
-import { getFile } from './utils.js'
+import State, { managers } from './state.js'
+import { getFile, cleanLines } from './utils.js'
 
 global.__ConflictViewParser = View.createElement;
+
+if (!global.__ConflictENV) global.__ConflictENV = {};
 
 (async () => {
 
@@ -26,6 +28,8 @@ global.__ConflictViewParser = View.createElement;
     DMChannel.prototype.view = function (view) { view.applyTo(this); };
     NewsChannel.prototype.view = function (view) { view.applyTo(this); };
     ThreadChannel.prototype.view = function (view) { view.applyTo(this); };
+
+    if (process.env.CONFLICT_VERBOSE) global.__ConflictENV.verbose = true;
 
     let config;
     try {
@@ -39,7 +43,11 @@ global.__ConflictViewParser = View.createElement;
 
     _setClient(client);
 
-    client.on('ready', () => {
+    if (process.env.CONFLICT_VERBOSE === "TRUE") onDebug(message => {
+        stump.verbose(message);
+    });
+
+    onReady(() => {
         stump.success('Logged in as ' + client.user.tag);
         initCommands();
     });
@@ -62,7 +70,7 @@ global.__ConflictViewParser = View.createElement;
     async function initCommands () {
         let previousGuilds = [];
         if (fs.existsSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'))) {
-            previousGuilds = fs.readFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), 'utf8').split('^');
+            previousGuilds = fs.readFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), 'utf8').split('^').filter(guild => guild);
         }
 
         let commandsPath = path.join(process.cwd(), '.conflict', 'build', 'commands');
@@ -130,7 +138,7 @@ global.__ConflictViewParser = View.createElement;
                         if (output instanceof Promise) output = await output;
                     } catch (err) {
 
-                        console.error(err);
+                        stump.error(err);
                         try {
                             if (errorHandler) return errorHandler(err, interaction);
                             const file = getFile(err);
@@ -138,18 +146,24 @@ global.__ConflictViewParser = View.createElement;
                                 new MessageEmbed()
                                     .setColor('#ff4444')
                                     .setTitle('Command Error')
-                                    .setDescription(file + ' ```' + err.stack + '```')
+                                    .setDescription(file + ' ```' + cleanLines(err.stack, 4) + '```')
                                     .setTimestamp()
                             ] });
                         } catch (nestedErr) {
+                            
+                            stump.error('Conflict had a hard time figuring this one out.', nestedErr);
                             if (errorHandler) return errorHandler(err, interaction);
-                            interaction.channel.send(
-                                new MessageEmbed()
-                                    .setColor('#ff4444')
-                                    .setTitle('Command Error')
-                                    .setDescription('```' + err.stack + '```')
-                                    .setTimestamp()
-                            );
+                            try {
+                                interaction.channel.send(
+                                    new MessageEmbed()
+                                        .setColor('#ff4444')
+                                        .setTitle('Command Error')
+                                        .setDescription('```' + err.stack + '```')
+                                        .setTimestamp()
+                                );
+                            } catch (nestedNestedErr) {
+                                stump.error('Nested error handling failed.');
+                            }
                         }
                     }
                 } else {
@@ -163,13 +177,49 @@ global.__ConflictViewParser = View.createElement;
                 }
             } else {
                 let { customId } = interaction;
-                interaction.reply({ embeds: [
-                    new MessageEmbed()
-                        .setColor('#ff4444')
-                        .setTitle('Feature in Development')
-                        .setDescription('```' + `Conflict Erorr: FeatureNotReady\n    at ${customId}.component:1:1` + '```')
-                        .setTimestamp()
-                ] });
+                let code = managers.components.select('*').fetch(customId);
+                if (code) {
+                    try {
+                        let output = await code(new InteractionResponse(interaction));
+                        if (output instanceof Promise) output = await output;
+                    } catch (err) {
+                        stump.error(err);
+                        try {
+                            if (errorHandler) return errorHandler(err, interaction);
+                            const file = getFile(err);
+                            interaction.reply({ embeds: [
+                                new MessageEmbed()
+                                    .setColor('#ff4444')
+                                    .setTitle('Command Error')
+                                    .setDescription(file + ' ```' + cleanLines(err.stack, 4) + '```')
+                                    .setTimestamp()
+                            ] });
+                        } catch (nestedErr) {
+                            
+                            stump.error('Conflict had a hard time figuring this one out.', nestedErr);
+                            if (errorHandler) return errorHandler(err, interaction);
+                            try {
+                                interaction.channel.send(
+                                    new MessageEmbed()
+                                        .setColor('#ff4444')
+                                        .setTitle('Command Error')
+                                        .setDescription('```' + err.stack + '```')
+                                        .setTimestamp()
+                                );
+                            } catch (nestedNestedErr) {
+                                stump.error('Nested error handling failed.');
+                            }
+                        }
+                    }
+                } else {
+                    interaction.reply({ embeds: [
+                        new MessageEmbed()
+                            .setColor('#ff4444')
+                            .setTitle('Button Expired')
+                            .setDescription('This button is expired.')
+                            .setTimestamp()
+                    ] });
+                } 
             }
         });
     }

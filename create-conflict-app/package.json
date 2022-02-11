@@ -17,8 +17,5 @@
     "@babel/plugin-transform-react-jsx": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5"
-  },
-  "dependencies": {
-    "@conflict/beta": "^0.1.5"
   }
 }

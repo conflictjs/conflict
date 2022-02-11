@@ -43,7 +43,7 @@ export function getFile (error) {
             lines[1],
             lines[2],
             lines[3],
-            '//' + ' '.repeat(col - 3) + '^ ' + error.split('\n')[0] + ' (:' + line + ':' + col + ')',
+            '//' + ' '.repeat(col - 3) + '^ ' + error.stack.split('\n')[0] + ' (:' + line + ':' + col + ')',
             lines[4],
             lines[5],
             lines[6]
@@ -51,4 +51,18 @@ export function getFile (error) {
         snippet = lines.join('\n');
     }
     return "```js\n" + snippet + "```";
+}
+
+export function cleanLines (input, lines) {
+    return input.split('\n').splice(0, input.split('\n').length - lines).join('\n');
+}
+
+export function detectFlag (args, flag, allFlags = []) {
+    let flagLetters = allFlags.map(flagItem => flagItem[0]);
+    return (
+        args.includes('-'  + flag) ||
+        args.includes('--' + flag) ||
+        args.includes('-'  + ( flagLetters.includes(flag[0]) ? flag[0].toUpperCase() : flag[0] )) ||
+        args.includes('--' + ( flagLetters.includes(flag[0]) ? flag[0].toUpperCase() : flag[0] ))
+    );
 }
