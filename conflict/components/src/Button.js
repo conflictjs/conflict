@@ -1,8 +1,6 @@
 import { managers } from '../../state.js';
 
 export default function Button ({ style, onclick, customId, url, label, children, emoji, variant, onClick }) {
-    console.log('[children]', children);
-    console.log('[label]', label);
     label = (children && children.length) ? (
         <label>{children[0]}</label>
     ) : (

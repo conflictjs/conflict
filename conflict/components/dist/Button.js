@@ -10,8 +10,6 @@ export default function Button({
   variant,
   onClick
 }) {
-  console.log('[children]', children);
-  console.log('[label]', label);
   label = children && children.length ? global.__ConflictViewParser("label", null, children[0]) : global.__ConflictViewParser("label", null, label);
   if (!style) style = variant ? variant : url ? 5 : 1;
 
