@@ -36,7 +36,7 @@ export const parseView = (input) => {
             delete child.props.as;
         }
 
-        if (child.tag.endsWith('_arr')) child.tag = child.tag.substring(0, child.tag.length - 4) + ('$' + Date.now() + index + 'R' + '$'); // Allow for multiple elements with the same tag, so long as it ends with _arr
+        if (child.tag && child.tag.endsWith && child.tag.endsWith('_arr')) child.tag = child.tag.substring(0, child.tag.length - 4) + ('$' + Date.now() + index + 'R' + '$'); // Allow for multiple elements with the same tag, so long as it ends with _arr
 
         // if (!object[child.tag] && child.tag === 'embeds') object[child.tag] = [];
         if (!object[child.tag] && child.tag === 'components') object[child.tag] = [];

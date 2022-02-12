@@ -7,7 +7,8 @@ export default function Button({
   label,
   children,
   emoji,
-  variant
+  variant,
+  onClick
 }) {
   console.log('[children]', children);
   console.log('[label]', label);
@@ -57,7 +58,8 @@ export default function Button({
     }
   }
 
-  if (!customId && !url && !onclick) throw new Error('Button must have either customId, url, or onclick props');
+  if (!customId && !url && !onclick && !onClick) throw new Error('Button must have either customId, url, or onclick props');
+  if (!onclick && onClick) onclick = onClick;
   let props = {
     style,
     type: 2,

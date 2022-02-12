@@ -45,6 +45,8 @@ export class InteractionResponse {
         this.client = interaction.client;
         this.createdAt = interaction.createdAt;
         this.createdTimestamp = interaction.createdTimestamp;
+
+        this.values = interaction.values;
         
     }
     

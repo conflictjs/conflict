@@ -1,5 +1,5 @@
 import Command from '@conflict/beta/commands';
-import { Button, ActionRow, Embed, Attachment } from '@conflict/beta/components';
+import { Button, ActionRow, Embed, SelectMenu, SelectOption } from '@conflict/beta/components';
 import View from '@conflict/beta/View';
 
 export default new Command({
@@ -16,10 +16,22 @@ export default new Command({
                         <title>Hello, world!</title>
                         <description>Welcome to **Conflict**.</description>
                 </Embed>
+
                 <ActionRow>
                     <Button onclick={(event) => {
-                        event.privateView(buttonView);
+                        event.respond({ content: 'You clicked me!', ephemeral: true });
                     }} variant="green">Green Button</Button>
+                </ActionRow>
+
+                <ActionRow>
+                    <SelectMenu onclick={(event) => {
+                        event.respond({ content: `You selected ${JSON.stringify(event.values)}`, ephemeral: true });
+                    }}>
+
+                        <SelectOption value="option_1">This the first option.</SelectOption>
+                        <SelectOption value="option_2">This is the second option.</SelectOption>
+
+                    </SelectMenu>
                 </ActionRow>
             </message>
         );

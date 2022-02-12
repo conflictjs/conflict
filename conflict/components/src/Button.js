@@ -1,6 +1,6 @@
 import { managers } from '../../state.js';
 
-export default function Button ({ style, onclick, customId, url, label, children, emoji, variant }) {
+export default function Button ({ style, onclick, customId, url, label, children, emoji, variant, onClick }) {
     console.log('[children]', children);
     console.log('[label]', label);
     label = (children && children.length) ? (
@@ -53,7 +53,8 @@ export default function Button ({ style, onclick, customId, url, label, children
         }
     }
 
-    if (!customId && !url && !onclick) throw new Error('Button must have either customId, url, or onclick props');
+    if (!customId && !url && !onclick && !onClick) throw new Error('Button must have either customId, url, or onclick props');
+    if (!onclick && onClick) onclick = onClick;
     let props = {
         style,
         type: 2,

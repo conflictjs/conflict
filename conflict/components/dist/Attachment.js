@@ -1,4 +1,3 @@
-import { MessageAttachment } from 'discord.js';
 export default function Attachment({
   url,
   attachment,
