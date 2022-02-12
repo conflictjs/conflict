@@ -5,7 +5,7 @@
   "main": "exports.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:scripts:components:compile": "cd components && npx babel src --out-dir dist"
+    "components": "cd components && npx babel src --out-dir dist"
   },
   "repository": {
     "type": "git",
