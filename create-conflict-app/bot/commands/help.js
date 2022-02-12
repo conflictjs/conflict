@@ -11,14 +11,14 @@ export default new Command({
     execute: async (command, options, utils) => {
         command.view(
             <message>
-                <embeds>
+                <embeds_arr>
                     <embed color="#ff3333" image={{ url: "https://www.gitbook.com/cdn-cgi/image/width=32,height=32,fit=contain,dpr=1,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FqKkjNKHtBhCUHveEGTY2%252Ficon%252F2sgixS2pVqtWMiBvRGg2%252FConflict.png%3Falt%3Dmedia%26token%3D24c0b0f6-f987-46ca-b4a5-8f193d650bcb" }}>
                         <title>Hello, world!</title>
                         <description>Welcome to **Conflict**.</description>
                     </embed>
-                </embeds>
+                </embeds_arr>
                 <ActionRow>
-                    <Button onclick={(event) => event.respond(`<@${event.author.id}> clicked the button!`)}>Click Me</Button>
+                    <Button onclick={(event) => event.respond(`<@${event.author.id}> clicked the button!`)} variant="green">Green Button</Button>
                 </ActionRow>
             </message>
         );

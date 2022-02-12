@@ -38,7 +38,7 @@ export const parseView = (input) => {
 
         if (child.tag.endsWith('_arr')) child.tag = child.tag.substring(0, child.tag.length - 4) + ('$' + Date.now() + index + 'R' + '$'); // Allow for multiple elements with the same tag, so long as it ends with _arr
 
-        if (!object[child.tag] && child.tag === 'embeds') object[child.tag] = [];
+        // if (!object[child.tag] && child.tag === 'embeds') object[child.tag] = [];
         if (!object[child.tag] && child.tag === 'components') object[child.tag] = [];
 
         else if (!object[child.tag] && child.tag === 'vstack') object[child.tag] = [];
@@ -51,7 +51,7 @@ export const parseView = (input) => {
 
 
     let keys = Object.keys(object);
-    if (keys.length == 1 && keys[0] === 'embed' && tag === 'embeds') object = object[keys[0]];
+    // if (keys.length == 1 && keys[0] === 'embed' && tag === 'embeds') object = object[keys[0]];
     if (keys.length == 1 && keys[0] === 'hstack' && tag === 'vstack') object = object[keys[0]];
     //console.log('isComponent', keys.length == 1 && keys[0] === 'component' && tag === 'components');
 //    if (keys.length == 1 && keys[0] === 'component' && tag === 'components') object = [object[keys[0]]];
