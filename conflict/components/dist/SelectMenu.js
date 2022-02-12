@@ -10,7 +10,7 @@ export default function SelectMenu({
   max,
   disabled = false
 }) {
-  if (!customId && !onclick && !onClick) throw new Error('Button must have either customId, url, or onclick props');
+  if (!customId && !onclick && !onClick) throw new Error('SelectMenu must have either customId, url, or onclick props');
   if (!onclick && onClick) onclick = onClick;
 
   if (children) {

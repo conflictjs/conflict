@@ -1,5 +1,5 @@
 import Command from '@conflict/beta/commands';
-import { Button, ActionRow, Embed, SelectMenu, SelectOption } from '@conflict/beta/components';
+import { Button, ActionRow, Embed, SelectMenu, SelectOption, TextInput } from '@conflict/beta/components';
 import View from '@conflict/beta/View';
 
 export default new Command({

@@ -2,7 +2,7 @@ import { managers } from '../../state.js';
 import SelectOption from './SelectOption.js';
 
 export default function SelectMenu ({ onclick, onClick, customId, options, children, min, max, disabled = false }) {
-    if (!customId && !onclick && !onClick) throw new Error('Button must have either customId, url, or onclick props');
+    if (!customId && !onclick && !onClick) throw new Error('SelectMenu must have either customId, url, or onclick props');
     if (!onclick && onClick) onclick = onClick;
     if (children) {
         options = children;
