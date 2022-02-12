@@ -62,25 +62,19 @@ export const parseView = (input) => {
 }
 
 export function recursiveArray (tree) {
-    console.log('[recursiveArray]', tree);
     for (const key in tree) {
-        console.log(key, key.includes('$'));
         let newName;
         if (key.includes('$')) {
             newName = key.substring(0, key.indexOf('$'));
             if (tree[newName]) tree[newName].push(Object.values(tree[key])[0]);
             else {
-                console.log('[value]', (tree[key]));
-                console.log('[values]', Object.values(tree[key]));
                 tree[newName] = [Object.values(tree[key])[0]];
             }
             delete tree[key];
         }
         if (tree[key] instanceof Array) {
-            console.log('[typeArray]', tree[key]);
             tree[key] = tree[key].map(item => recursiveArray(item));
         } else if (newName && tree[newName] instanceof Array) {
-            console.log('[typeArray]', tree[newName]);
             tree[newName] = tree[newName].map(item => recursiveArray(item));
         } else if (typeof tree[key] == 'object') tree[key] = recursiveArray(tree[key]);
     }
@@ -103,8 +97,11 @@ export class View {
         let parsed = parseView(target);
         parsed = parseTree(parsed);
         let $hooks = [];
+        let attachments = [];
         for (const key in parsed) {
-            this[key] = parsed[key];
+            if (key === 'attachments') {
+                attachments = parsed[key];
+            } else this[key] = parsed[key];
         }
         this.callback = async function (message) {
             if (message instanceof Discord.Message) {
@@ -114,10 +111,9 @@ export class View {
                 }
             }
         }
-        this.applyTo = async function (channel) {
-            let output = channel.send(this);
+        this.applyTo = async function (channel, isInteraction) {
+            let output = isInteraction ? channel.reply(this, ...attachments) : channel.send(this, ...attachments);
             if (output instanceof Promise) output = await output;
-            console.log(output, output instanceof Discord.Message);
             if (output instanceof Discord.Message) {
                 let hooks = $hooks;
                 for (const hook of hooks) {

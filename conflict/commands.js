@@ -91,7 +91,8 @@ export class InteractionResponse {
         return View;
     }
     view (view) {
-        return this.interaction.reply(new View(view));
+        if (!(view instanceof View)) view = new View(view);
+        view.applyTo(this.interaction, true);
     }
     sendView (options) {
         if (!view instanceof View) return;

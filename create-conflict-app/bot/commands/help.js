@@ -1,5 +1,5 @@
 import Command from '@conflict/beta/commands';
-import { Button, ActionRow, Embed } from '@conflict/beta/components';
+import { Button, ActionRow, Embed, Attachment } from '@conflict/beta/components';
 
 export default new Command({
     name: 'help',
