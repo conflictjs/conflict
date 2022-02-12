@@ -1,4 +1,4 @@
-import View from './view.js'
+import View, { Component } from './view.js'
 
 export default class Command {
     constructor ({ name, description, options, execute, meta, testing }) {
@@ -84,26 +84,44 @@ export class InteractionResponse {
         return this.interaction.isSelectMenu();
     }
     reply (...options) {
+        let ephemeral = false;
+        if (options[1] && options[1].ephemeral) ephemeral = true;
+        if (options[0] instanceof View && ephemeral) return this.privateView(...options);
+        if (options[0] instanceof Component && ephemeral) return this.privateView(...options);
+        if (options[0] instanceof View) return this.view(...options);
+        if (options[0] instanceof Component) return this.view(...options);
+        if (ephemeral && options[0] instanceof String) options[0] = { content: options[0], ephemeral: true };
+        if (ephemeral && options[0] && options[0].toString() == '[object Object]') options[0].ephemeral = true;
         return this.interaction.reply(...options);
     }
     respond (...options) {
-        return this.interaction.reply(...options);
+        return this.reply(...options);
+    }
+    respondPrivate (...options) {
+        return this.privateReply(...options);
+    }
+    replyPrivate (...options) {
+        return this.privateReply(...options);
+    }
+    private (...options) {
+        return this.privateReply(...options);
+    }
+    privateReply (...options) {
+        if (options[0] instanceof String) options[0] = { content: options[0], ephemeral: true };
+        if (options[0] && options[0].toString() == '[object Object]') options[0].ephemeral = true;
+        return this.reply(...options);
     }
     getView () {
         return View;
     }
     view (view, options) {
+        console.log('view', view);
         if (!(view instanceof View)) view = new View(view);
         view.applyTo(this.interaction, options, true);
     }
     privateView (view, options) {
         view.ephemeral = true;
         this.view(view, options);
-    }
-    sendView (options) {
-        if (!view instanceof View) return;
-        console.log(JSON.stringify(view, null, 4));
-        return this.interaction.reply(view);
     }
     update (...options) {
         if (this.interaction.update) return this.interaction.update(options);

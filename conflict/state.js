@@ -1,4 +1,8 @@
 import { uuid, queryString } from './utils.js'
+import crypto from 'crypto'
+import fs from 'fs'
+import path from 'path'
+
 class StateManager {
     constructor (type) {
         this.type = type;
@@ -66,6 +70,34 @@ class ComponentState extends State {
         let queryString = 'c?type=code&id=' + encodeURIComponent(id);
         this.set(id, code);
         return queryString;
+    }
+    statelessStore (code) {
+        let id = crypto.createHmac("sha256", 'shhh').update(code.toString()).digest("base64");
+        let queryString = 'c?type=stateless&id=' + encodeURIComponent(id);
+        if (this.get(id)) return queryString;
+        this.set(id, code);
+        let cwd = process.cwd();
+        let cache = fs.readFileSync(path.join(cwd, '.conflict', '.stateless.cache'), 'utf8');
+        cache = cache.split('\n\n[===]\n\n').filter(segment => segment);
+        let data = id + '\n' + Buffer.from(code.toString()).toString('base64');
+        if (cache.includes(data)) return queryString;
+        cache.push(data);
+        fs.writeFileSync(path.join(cwd, '.conflict', '.stateless.cache'), cache.join('\n\n[===]\n\n'), 'utf8')
+        return queryString;
+    }
+    statelessLoad () {
+        let cwd = process.cwd();
+        if (!fs.existsSync(path.join(cwd, '.conflict', '.stateless.cache'))) fs.writeFileSync(path.join(cwd, '.conflict', '.stateless.cache'), '', 'utf8');
+        let cache = fs.readFileSync(path.join(cwd, '.conflict', '.stateless.cache'), 'utf8');
+        cache = cache.split('\n\n[===]\n\n').filter(segment => segment).map(cacheSegment => {
+            let [id, code] = cacheSegment.split('\n');
+            code = Buffer.from(code, 'base64').toString('utf8');
+            return { id, code };
+        });
+        for (const segment of cache) {
+            this.set(segment.id, eval(segment.code));
+        }
+        return cache;
     }
     fetch (url) {
         let id = decodeURIComponent(queryString('https://conflict.local/' + url, 'id'));

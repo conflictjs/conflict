@@ -129,6 +129,8 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
             });
         }
 
+        managers.components.select('*').statelessLoad();
+
         onInteractionCreate(async interaction => {
             if (interaction.isCommand()) {
                 if (commands[interaction.commandName]) {

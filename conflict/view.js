@@ -10,11 +10,11 @@ export const createElement = (tag, props = {}, ...children) => {
         return tag(props);
     }
 
-    return {
+    return new Component({
         tag: tag,
         props: props,
         children: children
-    }
+    })
 
 }
 
@@ -58,7 +58,7 @@ export const parseView = (input) => {
     if (object.components && object.components[0]) {
         //console.log(object.components[0])
     }
-    return object;
+    return new Component(object);
 }
 
 export function recursiveArray (tree) {
@@ -78,7 +78,7 @@ export function recursiveArray (tree) {
             tree[newName] = tree[newName].map(item => recursiveArray(item));
         } else if (typeof tree[key] == 'object') tree[key] = recursiveArray(tree[key]);
     }
-    return tree;
+    return new Component(tree);
 }
 
 export function parseTree (tree) {
@@ -90,6 +90,14 @@ export function parseTree (tree) {
     tree = recursiveArray(tree);
     console.log(JSON.stringify(tree, null, 4));
     return tree;
+}
+
+export class Component {
+    constructor (target) {
+        for (const key in target) {
+            this[key] = target[key];
+        }
+    }
 }
 
 export class View {

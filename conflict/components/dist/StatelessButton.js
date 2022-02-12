@@ -2,8 +2,6 @@ import { managers } from '../../state.js';
 export default function Button({
   style,
   onclick,
-  customId,
-  url,
   label,
   children,
   emoji,
@@ -13,9 +11,9 @@ export default function Button({
   console.log('[children]', children);
   console.log('[label]', label);
   label = children && children.length ? global.__ConflictViewParser("label", null, children[0]) : global.__ConflictViewParser("label", null, label);
-  if (!style) style = variant ? variant : url ? 5 : 1;
+  if (!style) style = variant ? variant : 1;
 
-  if (!(style >= 1 && style <= 5)) {
+  if (!(style >= 1 && style <= 4)) {
     switch ((style + '').toLowerCase()) {
       case 'primary':
       case 'cta':
@@ -46,26 +44,19 @@ export default function Button({
         style = 4;
         break;
 
-      case 'url':
-      case 'link':
-      case 'popup':
-        style = 5;
-        break;
-
       default:
         style = 1;
         break;
     }
   }
 
-  if (!customId && !url && !onclick && !onClick) throw new Error('Button must have either customId, url, or onclick props');
+  if (!onclick && !onClick) throw new Error('Button must have onclick prop');
   if (!onclick && onClick) onclick = onClick;
   let props = {
     style,
-    type: 2,
     emoji,
-    url: style === 5 ? url : undefined,
-    custom_id: style !== 5 ? customId ? customId : managers.components.select('*').store(onclick) : undefined
+    type: 2,
+    custom_id: managers.components.select('*').statelessStore(onclick)
   };
   return global.__ConflictViewParser("components_arr", null, global.__ConflictViewParser("component", props, label));
 }
