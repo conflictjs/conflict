@@ -51,8 +51,8 @@ export class InteractionResponse {
     deferReply () {
         return this.interaction.deferReply();
     }
-    editReply (options) {
-        return this.interaction.reditReply(options);
+    editReply (...options) {
+        return this.interaction.reditReply(...options);
     }
     deleteReply () {
         return this.interaction.deleteReply();
@@ -60,8 +60,8 @@ export class InteractionResponse {
     fetchReply () {
         return this.interaction.fetchReply();
     }
-    followUp (options) {
-        return this.interaction.followUp(options);
+    followUp (...options) {
+        return this.interaction.followUp(...options);
     }
     inGuild () {
         return this.interaction.inGuild();
@@ -81,27 +81,31 @@ export class InteractionResponse {
     isSelectMenu () {
         return this.interaction.isSelectMenu();
     }
-    reply (options) {
-        return this.interaction.reply(options);
+    reply (...options) {
+        return this.interaction.reply(...options);
     }
-    respond (options) {
-        return this.interaction.reply(options);
+    respond (...options) {
+        return this.interaction.reply(...options);
     }
     getView () {
         return View;
     }
-    view (view) {
+    view (view, options) {
         if (!(view instanceof View)) view = new View(view);
-        view.applyTo(this.interaction, true);
+        view.applyTo(this.interaction, options, true);
+    }
+    privateView (view, options) {
+        view.ephemeral = true;
+        this.view(view, options);
     }
     sendView (options) {
         if (!view instanceof View) return;
         console.log(JSON.stringify(view, null, 4));
         return this.interaction.reply(view);
     }
-    update (options) {
+    update (...options) {
         if (this.interaction.update) return this.interaction.update(options);
-        return this.reply(options);
+        return this.reply(...options);
     }
 }
 
