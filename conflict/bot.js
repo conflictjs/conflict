@@ -119,9 +119,12 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
         fs.writeFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), guilds.join('^'), 'utf8');
 
-        await client.api.applications(client.user.id).commands.put({
-            data: publicCommands
-        });
+        setTimeout(async () => {
+            await client.api.applications(client.user.id).commands.put({
+                data: publicCommands
+            });
+        }, 30000);
+
         for (const guild in guildCommands) {
             const commandsForGuild = guildCommands[guild];
             await client.api.applications(client.user.id).guilds(guild).commands.put({

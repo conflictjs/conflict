@@ -88,7 +88,7 @@ export function parseTree (tree) {
      * @returns {object} A parsed message ready to be sent
      */
     tree = recursiveArray(tree);
-    console.log(JSON.stringify(tree, null, 4));
+    // console.log(JSON.stringify(tree, null, 4));
     return tree;
 }
 
