@@ -1,10 +1,9 @@
 import { managers } from '../../state.js';
 export default function TextInput({
-  onclick,
-  onClick,
-  customId,
+  name,
   value,
   label,
+  style,
   required = false,
   placeholder,
   children,
@@ -12,13 +11,10 @@ export default function TextInput({
   max,
   variant
 }) {
-  if (!customId && !onclick && !onClick) throw new Error('TextInput must have either customId, url, or onclick props');
-  if (!onclick && onClick) onclick = onClick;
+  if (!name) throw new Error('TextInput must have a name');
 
-  if (children) {
-    value = global.__ConflictViewParser("value", null, children[0]);
-  } else {
-    value = global.__ConflictViewParser("value", null, value);
+  if (!value && children && children[0]) {
+    value = children[0];
   }
 
   if (!style) style = variant;
@@ -49,9 +45,10 @@ export default function TextInput({
     min_length: min,
     max_length: max,
     placeholder,
-    label,
+    value,
     required,
-    custom_id: customId ? customId : managers.components.select('*').store(onclick)
+    style,
+    custom_id: name
   };
-  return global.__ConflictViewParser("components_arr", null, global.__ConflictViewParser("component", props, value));
+  return global.__ConflictViewParser("components_arr", null, global.__ConflictViewParser("component", props, global.__ConflictViewParser("label", null, label)));
 }

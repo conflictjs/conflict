@@ -204,7 +204,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
                             stump.error('Conflict had a hard time figuring this one out.', nestedErr);
                             if (errorHandler) return errorHandler(err, interaction);
                             try {
-                                interaction.channel.send(
+                                interaction.reply(
                                     new MessageEmbed()
                                         .setColor('#ff4444')
                                         .setTitle('Command Error')
@@ -225,6 +225,57 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
                             .setTimestamp()
                     ] });
                 } 
+            }
+        });
+        client.ws.on('INTERACTION_CREATE', async (apiInteraction) => {
+            if (apiInteraction.type !== 5) return;
+            let interaction = new Discord.CommandInteraction(client, apiInteraction);
+            interaction.customId = apiInteraction.data.custom_id;
+            interaction.components = apiInteraction.data.components;
+            interaction.isModalSubmit = true;
+            let { customId } = interaction;
+            let code = managers.components.select('*').fetch(customId);
+            if (code) {
+                try {
+                    let output = await code(new InteractionResponse(interaction));
+                    if (output instanceof Promise) output = await output;
+                } catch (err) {
+                    stump.error(err);
+                    try {
+                        if (errorHandler) return errorHandler(err, interaction);
+                        const file = getFile(err);
+                        interaction.reply({ embeds: [
+                            new MessageEmbed()
+                                .setColor('#ff4444')
+                                .setTitle('Command Error')
+                                .setDescription(file + ' ```' + cleanLines(err.stack, 4) + '```')
+                                .setTimestamp()
+                        ] });
+                    } catch (nestedErr) {
+                        
+                        stump.error('Conflict had a hard time figuring this one out.', nestedErr);
+                        if (errorHandler) return errorHandler(err, interaction);
+                        try {
+                            interaction.reply(
+                                new MessageEmbed()
+                                    .setColor('#ff4444')
+                                    .setTitle('Command Error')
+                                    .setDescription('```' + err.stack + '```')
+                                    .setTimestamp()
+                            );
+                        } catch (nestedNestedErr) {
+                            stump.error('Nested error handling failed.');
+                        }
+                    }
+                }
+            } else {
+                interaction.reply({ embeds: [
+                    new MessageEmbed()
+                        .setColor('#ff4444')
+                        .setTitle('Button Expired')
+                        .setDescription('This button is expired.')
+                        .setTimestamp()
+                ] });
             }
         });
     }

@@ -1,16 +1,9 @@
 import { managers } from '../../state.js';
 
-export default function TextInput ({ onclick, onClick, customId, value, label, required = false, placeholder, children, min, max, variant }) {
-    if (!customId && !onclick && !onClick) throw new Error('TextInput must have either customId, url, or onclick props');
-    if (!onclick && onClick) onclick = onClick;
-    if (children) {
-        value = (
-            <value>{children[0]}</value>
-        );
-    } else {
-        value = (
-            <value>{value}</value>
-        );
+export default function TextInput ({ name, value, label, style, required = false, placeholder, children, min, max, variant }) {
+    if (!name) throw new Error('TextInput must have a name');
+    if (!value && children && children[0]) {
+        value = children[0];
     }
     if (!style) style = variant;
     if (!(style >= 1 && style <= 2)) {
@@ -38,16 +31,15 @@ export default function TextInput ({ onclick, onClick, customId, value, label, r
         min_length: min,
         max_length: max,
         placeholder,
-        label,
+        value,
         required,
-        custom_id: (
-            customId ? customId : managers.components.select('*').store(onclick)
-        )
+        style,
+        custom_id: name
     };
     return (
         <components_arr>
             <component {...props}>
-                {value}
+                <label>{label}</label>
             </component>
         </components_arr>
     )

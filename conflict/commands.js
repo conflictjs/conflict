@@ -48,6 +48,13 @@ export class InteractionResponse {
 
         this.values = interaction.values;
         
+        if (interaction.isModalSubmit) {
+            let values = {};
+            interaction.components.map(component => component.components[0]).forEach(component => {
+                values[component.custom_id] = component.value;
+            });
+            this.values = values;
+        }
     }
     
     deferReply () {
@@ -114,8 +121,18 @@ export class InteractionResponse {
     getView () {
         return View;
     }
+    modal (view) {
+        if (!(view instanceof View)) view = new View(view);
+        if (!view.title) throw new Error('Missing title');
+        if (!view.custom_id) throw new Error('Missing callback');
+        if (!view.title) throw new Error('Missing title');
+        if (!view.components) throw new Error('Missing components');
+        return this.interaction.client.api.interactions(this.interaction.id, this.interaction.token).callback.post({ data: {
+            type: 9,
+            data: view 
+        }});
+    }
     view (view, options) {
-        console.log('view', view);
         if (!(view instanceof View)) view = new View(view);
         view.applyTo(this.interaction, options, true);
     }
