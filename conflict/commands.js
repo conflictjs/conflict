@@ -36,7 +36,7 @@ export class InteractionResponse {
         this.id = interaction.id;
         this.guild = interaction.guild;
         this.member = interaction.member;
-        this.author = interaction.member.user;
+        if (interaction.member) this.author = interaction.member.user;
         this.token = interaction.token;
         this.type = interaction.type;
 
