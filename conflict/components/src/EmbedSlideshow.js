@@ -7,10 +7,10 @@ export default function EmbedSlideshow ({ embeds }) {
         <message>
             {activeEmbed}
             <ActionRow>
-                <Button onclick={(event) => event.respond('OK')}>{'<-'}</Button>
                 <Button onclick={(event) => event.respond('OK')}>{'<<'}</Button>
+                <Button onclick={(event) => event.respond('OK')}>{'←'}</Button>
                 <Button onclick={(event) => event.respond('OK')} disabled={true}>{embeds.indexOf(activeEmbed) + 1}</Button>
-                <Button onclick={(event) => event.respond('OK')}>{'->'}</Button>
+                <Button onclick={(event) => event.respond('OK')}>{'→'}</Button>
                 <Button onclick={(event) => event.respond('OK')}>{'>>'}</Button>
             </ActionRow>
         </message>
