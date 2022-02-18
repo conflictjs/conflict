@@ -10,12 +10,27 @@ export default new Command({
         guildId: '921962253262155876'
     },
     execute: async (command, options, utils) => {
+        // command.respond(
+        //     <EmbedSlideshow embeds={[
+        //         <Embed title="Hello">
+        //             <description>hi</description>
+        //         </Embed>
+        //     ]} />
+        // )
         command.respond(
-            <EmbedSlideshow embeds={[
-                <Embed title="Hello">
-                    <description>hi</description>
-                </Embed>
-            ]} />
+            <message>
+                <content>Hello</content>
+                <ActionRow>
+                    <Button onclick={(event) => event.respond('OK')} emoji={{
+                        name: '⏪'
+                    }} variant={1}></Button>
+                </ActionRow>
+                {/*`⏪ ⬅️ 🔵 ➡️ ⏩
+⏪ ⬅️ ⏺️ ➡️ ⏩
+⏪ ⬅️ 🟦 ➡️ ⏩
+⏪ ⬅️ ⏹️ ➡️ ⏩
+        ⏪ ⬅️ ⏺️ ➡️ ⏩`*/}
+            </message>
         )
     }
 });
