@@ -20,8 +20,6 @@ The JavaScript UI framework for Discord bots
 )](
     https://github.com/yodalightsabr/conflict
 )
-
-> ## **Status update:** New updates every **`📆 weekend`**
 --------
 > ### ⚠️ This project is under development and will likely not run as expected. Please do not use in a production environment.
 --------
