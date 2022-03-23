@@ -12,10 +12,14 @@ import { dirname } from "esm-dirname"
 import path from 'path'
 import fs from 'fs'
 import stump from './logger.js'
-import { _setClient, onInteractionCreate, onDebug, onReady } from './events.js'
+import events, { _setClient, onInteractionCreate, onDebug, onReady } from './events.js'
 import Command, { InteractionResponse } from './commands.js'
 import View from './view.js'
 import State, { managers } from './state.js'
+import { REST } from '@discordjs/rest'
+// const { REST } = djsrest;
+import typesv9 from 'discord-api-types/v9'
+const { Routes } = typesv9;
 import { getFile, cleanLines } from './utils.js'
 
 global.__ConflictViewParser = View.createElement;
@@ -37,7 +41,9 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
     } catch (err) {
         return stump.error('Missing conflict.config.js');
     }
-    const { token, intents, errorHandler } = config.default;
+    const { token, intents, errorHandler, plugins } = config.default;
+
+    const rest = new REST({ version: '9' }).setToken(token);
 
     const client = new Client({ intents: (intents || ["GUILD_MESSAGES"]).map(intent => Intents.FLAGS[intent] ) });
 
@@ -114,22 +120,33 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
         previousGuilds = previousGuilds.filter(guild => !guilds.includes(guild));
         for (const guild of previousGuilds) {
-            await client.api.applications(client.user.id).guilds(guild).commands.put({ data: [] });
+            stump.debug(
+                '124',
+                await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: [] })
+            );
         }
 
         fs.writeFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), guilds.join('^'), 'utf8');
 
         setTimeout(async () => {
-            await client.api.applications(client.user.id).commands.put({
-                data: publicCommands
-            });
+            stump.debug(
+                '133',
+                await rest.put(Routes.applicationCommands(client.user.id), { body: publicCommands })
+            );
+            // await client.api.applications(client.user.id).commands.put({
+            //     data: publicCommands
+            // });
         }, 30000);
 
         for (const guild in guildCommands) {
             const commandsForGuild = guildCommands[guild];
-            await client.api.applications(client.user.id).guilds(guild).commands.put({
-                data: commandsForGuild
-            });
+            stump.debug(
+                '144',
+                await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: commandsForGuild })
+            );
+            // await client.api.applications(client.user.id).guilds(guild).commands.put({
+            //     data: commandsForGuild
+            // });
         }
 
         managers.components.select('*').statelessLoad();
@@ -282,6 +299,17 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
     async function init () {
         await initEvents();
+        for (const plugin of plugins) {
+            plugin({
+                stump,
+                logger: stump,
+                events,
+                View,
+                State,
+                config,
+                client
+            });
+        }
     }
 
     init();
