@@ -3,3 +3,4 @@ create-conflict-app/.conflict
 create-conflict-app/conflict.config.js
 conflict/node_modules
 ignore
+.vscode/settings.json
