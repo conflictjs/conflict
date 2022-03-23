@@ -20,8 +20,6 @@ The JavaScript UI framework for Discord bots
 )](
     https://github.com/yodalightsabr/conflict
 )
-
-> ## **Status update:** New updates every **`📆 weekend`**
 --------
 > ### ⚠️ This project is under development and will likely not run as expected. Please do not use in a production environment.
 --------
@@ -41,7 +39,7 @@ Additionally, you can drop a ⭐ **star** on this repo to show your support. If 
 
 `create-conflict-app` is a testing place for the Conflict bot, currently running in the Discord server. Whatever the bot is doing is from the code in here.
 
-`create-conflict-app/bot` is where the code for the bot is stored. It is in a sub-directory so that all files can be transpiled for JSX, therefore allowing for a more organic file structure.
+`create-conflict-app/bot` is where the code for the bot is stored. It is in a subdirectory so that all files can be transpiled for JSX, therefore allowing for a more organic file structure.
 
 `create-conflict-app/.conflict` is similar to `.next` with Next.js. It holds the output and all temporary files for conflict.
 
