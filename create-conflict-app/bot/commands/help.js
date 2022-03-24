@@ -7,7 +7,8 @@ export default new Command({
     description: 'Get help',
     options: [],
     testing: {
-        guildId: '921962253262155876'
+        // guildId: '921962253262155876'
+        guildId: '245'
     },
     execute: async (command, options, utils) => {
         const buttonView = (

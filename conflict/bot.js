@@ -41,7 +41,8 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
     } catch (err) {
         return stump.error('Missing conflict.config.js');
     }
-    const { token, intents, errorHandler, plugins: [] } = config.default;
+    let { token, intents, errorHandler, plugins } = config.default;
+    if (!plugins) plugins = [];
 
     const rest = new REST({ version: '9' }).setToken(token);
 
@@ -120,33 +121,18 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
         previousGuilds = previousGuilds.filter(guild => !guilds.includes(guild));
         for (const guild of previousGuilds) {
-            stump.debug(
-                '124',
-                await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: [] })
-            );
+            await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: [] });
         }
 
         fs.writeFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), guilds.join('^'), 'utf8');
 
         setTimeout(async () => {
-            stump.debug(
-                '133',
-                await rest.put(Routes.applicationCommands(client.user.id), { body: publicCommands })
-            );
-            // await client.api.applications(client.user.id).commands.put({
-            //     data: publicCommands
-            // });
+            await rest.put(Routes.applicationCommands(client.user.id), { body: publicCommands })
         }, 30000);
 
         for (const guild in guildCommands) {
             const commandsForGuild = guildCommands[guild];
-            stump.debug(
-                '144',
-                await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: commandsForGuild })
-            );
-            // await client.api.applications(client.user.id).guilds(guild).commands.put({
-            //     data: commandsForGuild
-            // });
+            await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: commandsForGuild })
         }
 
         managers.components.select('*').statelessLoad();
