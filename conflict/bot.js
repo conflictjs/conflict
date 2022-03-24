@@ -41,7 +41,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
     } catch (err) {
         return stump.error('Missing conflict.config.js');
     }
-    const { token, intents, errorHandler, plugins } = config.default;
+    const { token, intents, errorHandler, plugins: [] } = config.default;
 
     const rest = new REST({ version: '9' }).setToken(token);
 
