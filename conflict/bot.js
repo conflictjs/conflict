@@ -76,7 +76,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
     async function initCommands () {
         let previousGuilds = [];
         if (fs.existsSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'))) {
-            previousGuilds = fs.readFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), 'utf8').split('^').filter(guild => guild);
+            previousGuilds = fs.readFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), 'utf8').split('^').filter(guild => guild).map(guild => guild.trim()).filter(guild => guild);
         }
 
         let commandsPath = path.join(process.cwd(), '.conflict', 'build', 'commands');
