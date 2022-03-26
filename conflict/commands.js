@@ -1,10 +1,37 @@
 import View, { Component } from './view.js'
 
+class ValueLocalizations {
+    constructor (default_, localizations) {
+        this.default = default_;
+        this.localizations = localizations;
+    }
+    getDefault () {
+        return this.default;
+    }
+    getLocalizations () {
+        return this.localizations;
+    }
+}
+
+export function localize (localizations) {
+    return new ValueLocalizations(localizations);
+}
+
 export default class Command {
-    constructor ({ name, description, options, execute, meta, testing }) {
+    constructor ({ name, description, options, execute, meta, testing, description_localizations = {}, name_localizations = {} }) {
         this.name = name;
         this.description = description;
         this.options = options;
+        this.name_localizations = name_localizations;
+        this.description_localizations = description_localizations;
+        if (name instanceof ValueLocalizations) {
+            this.name = name.getDefault();
+            this.name_localizations = name.getLocalizations();
+        }
+        if (description instanceof ValueLocalizations) {
+            this.description = description.getDefault();
+            this.description_localizations = description.getLocalizations();
+        }
         this.testing = testing;
         this.type = (testing && testing.guildId) ? 'guild' : 'global';
         this.meta = meta;
@@ -12,6 +39,17 @@ export default class Command {
     }
     execute (command, options, utils) {
         return this.executeFn(command, options, utils);
+    }
+    localize (languageData) {
+        for (const language in languageData) {
+            const text = languageData[language];
+            this.name_localizations[language] = text.name;
+            this.description_localizations[language] = text.description;
+        }
+        return this;
+    }
+    static localize (data) {
+        return localize(data);
     }
 }
 

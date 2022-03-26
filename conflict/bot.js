@@ -108,13 +108,17 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
                 guildCommands[commandData.testing.guildId].push({
                     name: commandData.name,
                     description: commandData.description,
-                    options: commandData.options
+                    options: commandData.options,
+                    name_localizations: commandData.name_localizations,
+                    description_localizations: commandData.description_localizations
                 });
             } else {
                 publicCommands.push({
                     name: commandData.name,
                     description: commandData.description,
-                    options: commandData.options
+                    options: commandData.options,
+                    name_localizations: commandData.name_localizations,
+                    description_localizations: commandData.description_localizations
                 });
             }
         }

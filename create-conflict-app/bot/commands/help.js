@@ -8,7 +8,7 @@ export default new Command({
     options: [],
     testing: {
         // guildId: '921962253262155876'
-        guildId: '245'
+        guildId: '921962253262155876'
     },
     execute: async (command, options, utils) => {
         const buttonView = (
@@ -55,5 +55,10 @@ export default new Command({
             </message>
         );
         command.respond(buttonView);
+    }
+}).localize({
+    'es-ES': {
+        name: 'ayuda',
+        description: 'Obtener ayuda'
     }
 });
