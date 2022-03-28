@@ -43,6 +43,6 @@ Additionally, you can drop a ⭐ **star** on this repo to show your support. If 
 
 `create-conflict-app/.conflict` is similar to `.next` with Next.js. It holds the output and all temporary files for conflict.
 
-`create-conflict-app/conflict` is the folder for all of Conflict's exports and utilities. Other than `bot.js` and `ep.js`, most files will be mapped to the `@conflict/beta/<filename>` export.
+`conflict` is the folder for all of Conflict's exports and utilities. Other than `bot.js` and `ep.js`, most files will be mapped to the `@conflict/beta/<filename>` export.
 
-`create-conflict-app/conflict/ep.js` is the entry point, which will are mapped to the command `conflict start` and `conflict dev` in the NPM package.
+`conflict/ep.js` is the entry point, which will are mapped to the command `conflict start` and `conflict dev` in the NPM package.
