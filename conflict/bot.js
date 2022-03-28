@@ -12,7 +12,7 @@ import { dirname } from "esm-dirname"
 import path from 'path'
 import fs from 'fs'
 import stump from './logger.js'
-import events, { _setClient, onInteractionCreate, onDebug, onReady } from './events.js'
+import events, { _setClient, onInteractionCreate, onDebug, onReady, onHotReload, onStartThinking } from './events.js'
 import Command, { InteractionResponse } from './commands.js'
 import View from './view.js'
 import State, { managers } from './state.js'
@@ -21,6 +21,18 @@ import { REST } from '@discordjs/rest'
 import typesv9 from 'discord-api-types/v9'
 const { Routes } = typesv9;
 import { getFile, cleanLines } from './utils.js'
+
+let thinking = false;
+const finishThinking = () => {
+    return new Promise(resolve => {
+        let id = setInterval(() => {
+            if (!thinking) {
+                clearInterval(id);
+                resolve();
+            }
+        }, 100);
+    })
+}
 
 global.__ConflictViewParser = View.createElement;
 
@@ -49,6 +61,18 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
     const client = new Client({ intents: (intents || ["GUILD_MESSAGES"]).map(intent => Intents.FLAGS[intent] ) });
 
     _setClient(client);
+    if (client.shard) {
+        setInterval(() => {
+            client.shard.fetchClientValues('user')
+                .then(() => {})
+                .catch((error) => {
+                    if (error.message == 'Channel closed') {
+                        if (__ConflictENV.verbose) stump.verbose('Disconnected from parent, killing shard');
+                        process.exit(1);
+                    }
+                });
+        }, 3000);
+    }
 
     if (process.env.CONFLICT_VERBOSE === "TRUE") onDebug(message => {
         stump.verbose(message);
@@ -74,7 +98,8 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
     let commands = {};
 
-    async function initCommands () {
+    async function initCommands (hotReload) {
+        if (hotReload) commands = {};
         let previousGuilds = [];
         if (fs.existsSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'))) {
             previousGuilds = fs.readFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), 'utf8').split('^').filter(guild => guild).map(guild => guild.trim()).filter(guild => guild);
@@ -86,7 +111,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
             let filePaths = files.map(file => path.join(commandsPath, file));
             for (const file of filePaths) {
                 if (file.endsWith('.js') || file.endsWith('.cjs') || file.endsWith('.mjs')) {
-                    let fileData = await import(file);
+                    let fileData = await import(file + '?r=' + Math.random().toString(36).substring(3));
 
                     if (fileData.default && fileData.default instanceof Command) {
                         let command = fileData.default;
@@ -124,24 +149,35 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
         }
 
         previousGuilds = previousGuilds.filter(guild => !guilds.includes(guild));
-        for (const guild of previousGuilds) {
+        if (!hotReload) for (const guild of previousGuilds) {
             await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: [] });
         }
 
         fs.writeFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), guilds.join('^'), 'utf8');
 
-        setTimeout(async () => {
-            await rest.put(Routes.applicationCommands(client.user.id), { body: publicCommands })
+        if (!hotReload) setTimeout(async () => {
+            await rest.put(Routes.applicationCommands(client.user.id), { body: publicCommands });
         }, 30000);
 
-        for (const guild in guildCommands) {
+        if (!hotReload) for (const guild in guildCommands) {
             const commandsForGuild = guildCommands[guild];
             await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: commandsForGuild })
         }
 
         managers.components.select('*').statelessLoad();
 
-        onInteractionCreate(async interaction => {
+        if (!hotReload) onInteractionCreate(async interaction => {
+            if (thinking) {
+                interaction.deferReply();
+                await finishThinking();
+                return interaction.editReply({ embeds: [
+                    new MessageEmbed()
+                        .setColor('#ff4444')
+                        .setTitle('Build Finished')
+                        .setDescription('Run the command again to see the updated output.')
+                        .setTimestamp()
+                ] })
+            }
             if (interaction.isCommand()) {
                 if (commands[interaction.commandName]) {
                     let command = commands[interaction.commandName];
@@ -234,7 +270,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
                 } 
             }
         });
-        client.ws.on('INTERACTION_CREATE', async (apiInteraction) => {
+        if (!hotReload) client.ws.on('INTERACTION_CREATE', async (apiInteraction) => {
             if (apiInteraction.type !== 5) return;
             let interaction = new Discord.CommandInteraction(client, apiInteraction);
             interaction.customId = apiInteraction.data.custom_id;
@@ -303,4 +339,13 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
     }
 
     init();
+    onHotReload(async () => {
+        stump.info('Reloading...');
+        await initCommands(true);
+        thinking = false;
+        stump.success('Reloaded. Hot reload does not update command metadata with Discord, only the response code.');
+    });
+    onStartThinking(() => {
+        thinking = true;
+    });
 })();

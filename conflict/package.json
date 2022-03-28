@@ -44,7 +44,8 @@
     "./utils": "./utils.js",
     "./state": "./state.js",
     "./components": "./components.js",
-    "./Components": "./components.js"
+    "./Components": "./components.js",
+    "./babel-plugin": "./babel.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",

@@ -17,5 +17,8 @@
     "@babel/plugin-transform-react-jsx": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.3"
   }
 }

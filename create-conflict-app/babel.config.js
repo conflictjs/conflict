@@ -1,4 +1,7 @@
 export default {
+    "plugins": [
+      "@conflict/beta/babel-plugin"
+    ],
     "presets": [
       [
         "@babel/preset-react",

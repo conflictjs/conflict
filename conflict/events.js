@@ -358,6 +358,22 @@ export function emit (event, ...args) {
 }
 events.on = emit;
 
+// Conflict events
+
+export function onHotReload (fn) {
+    client.on('conflict.hotReload', (...args) => {
+        fn(...args);
+    });
+}
+events.onHotReload = onHotReload;
+
+export function onStartThinking (fn) {
+    client.on('conflict.startThinking', () => {
+        fn();
+    });
+}
+events.onStartThinking = onStartThinking;
+
 // Time-based events
 
 export function onInterval (interval, code, startRightAway) {

@@ -14,7 +14,7 @@ export default new Command({
         const buttonView = (
             <message>
                 <Embed color="#ff3333" image={{ url: "https://conflict.js.org/favicon.png" }}>
-                        <title>Hello, world!</title>
+                        <title>Hell, world!</title>
                         <description>Welcome to **Conflict**.</description>
                 </Embed>
 
