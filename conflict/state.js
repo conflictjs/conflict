@@ -73,7 +73,7 @@ class ComponentState extends State {
     }
     statelessStore (code) {
         let id = crypto.createHmac("sha256", 'shhh').update(code.toString()).digest("base64");
-        let queryString = 'c?type=stateless&id=' + encodeURIComponent(id);
+        let queryString = 'c?type=stateless&r=' + Math.floor(Math.random() * 10000) + (Date.now() + '').substring(5) + '&id=' + encodeURIComponent(id);
         if (this.get(id)) return queryString;
         this.set(id, code);
         let cwd = process.cwd();
