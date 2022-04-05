@@ -1,9 +1,10 @@
 
 <p align="center">
-<img alt="Conflict logo, in a rounded font with a blue and red background" src="https://conflictframework.repl.co/conflict.svg" width="300">
+<img alt="Conflict logo, in a rounded font with a blue and red background" src="https://conflict.js.org/conflict.svg" width="300">
 </p>
 
 # Conflict
+https://conflict.js.org
 The JavaScript UI framework for Discord bots
 
 [![
