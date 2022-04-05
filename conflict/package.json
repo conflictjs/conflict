@@ -45,7 +45,9 @@
     "./state": "./state.js",
     "./components": "./components.js",
     "./Components": "./components.js",
-    "./babel-plugin": "./babel.js"
+    "./babel-plugin": "./babel.js",
+    "./global-ratelimit-plugin": "./plugins/global-ratelimit.js",
+    "./plugins": "./plugins"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",

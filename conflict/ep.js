@@ -3,6 +3,7 @@
 import { ShardingManager } from 'discord.js'
 import { dirname } from "esm-dirname"
 import path from 'path'
+import fs from 'fs'
 import { exec } from 'child_process'
 const __dirname = dirname(import.meta);
 import stump from './logger.js'
@@ -18,7 +19,7 @@ global.__ConflictENV = {};
         await import(__dirname + '/devserver/index.js');
     } else if (process.argv[0] == 'build') {
         stump.info('Starting build...');
-        exec('npx babel bot --out-dir .conflict/build', { cwd: process.cwd() }, (error, stdout, stderr) => {
+        exec('npx babel bot --out-dir .conflict/build --config-file ' + path.join(__dirname, 'babel.config.js'), { cwd: process.cwd() }, (error, stdout, stderr) => {
             if (error) return stump.error(error);
             stdout.trim().split('\n').filter(line => line).forEach(line => stump.info(line));
             stderr = stderr.trim().split('\n').filter(line => line);
@@ -36,7 +37,16 @@ global.__ConflictENV = {};
         } catch (err) {
             return stump.error('Missing conflict.config.js');
         }
-        const { token } = config.default;
+        let { token } = config.default;
+        if (!token) token = process.env.TOKEN ?? process.env.token;
+        if (!token) {
+            try {
+                token = fs.readFileSync(process.cwd() + '/token', 'utf8');
+            } catch (err) {
+                stump.error(new Error('Missing token. No token found in config file, token file, or env variable.'));
+                process.exit(1);
+            }
+        }
 
         const manager = new ShardingManager(path.join(__dirname, 'bot.js'), { token: token });
 

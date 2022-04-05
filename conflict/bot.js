@@ -54,6 +54,15 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
         return stump.error('Missing conflict.config.js');
     }
     let { token, intents, errorHandler, plugins } = config.default;
+    if (!token) token = process.env.TOKEN ?? process.env.token;
+    if (!token) {
+        try {
+            token = fs.readFileSync(process.cwd() + '/token', 'utf8');
+        } catch (err) {
+            stump.error(new Error('Missing token. No token found in config file, token file, or env variable.'));
+            process.exit(1);
+        }
+    }
     if (!plugins) plugins = [];
 
     const rest = new REST({ version: '9' }).setToken(token);
@@ -325,7 +334,10 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
     async function init () {
         await initEvents();
-        for (const plugin of plugins) {
+        for (let plugin of plugins) {
+            if (typeof plugin === "string") plugin = (await plugin()).default;
+            if (plugin instanceof Promise) plugin = await plugin;
+            if (plugin && plugin.default && plugin.default instanceof Function) plugin = plugin.default;
             plugin({
                 stump,
                 logger: stump,

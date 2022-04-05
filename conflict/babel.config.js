@@ -1,6 +1,6 @@
 export default {
     "plugins": [
-      "@conflict/beta/babel-plugin"
+      "./babel.js"
     ],
     "presets": [
       [

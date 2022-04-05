@@ -2,13 +2,14 @@ import { ShardingManager } from 'discord.js';
 import { exec } from 'child_process';
 import stump from '../logger.js';
 import path from 'path';
+import fs from 'fs';
 import chokidar from 'chokidar';
 import { dirname } from "esm-dirname";
 import { detectFlag } from '../utils.js';
 const __dirname = dirname(import.meta);
 const build = () => {
 	return new Promise((resolve, reject) => {
-		exec('npx babel bot --out-dir .conflict/build', { cwd: process.cwd() }, (error, stdout, stderr) => {
+		exec('npx babel bot --out-dir .conflict/build --config-file ' + path.join(__dirname, '..', 'babel.config.js'), { cwd: process.cwd() }, (error, stdout, stderr) => {
 			if (error) return reject(error);
 			resolve({ stdout, stderr });
 		});
@@ -33,7 +34,16 @@ build().then(async ({ stdout, stderr }) => {
 		stump.error('Missing conflict.config.js');
 	}
 
-	const { token } = config.default;
+	let { token } = config.default;
+    if (!token) token = process.env.TOKEN ?? process.env.token;
+    if (!token) {
+        try {
+            token = fs.readFileSync(process.cwd() + '/token', 'utf8');
+        } catch (err) {
+            stump.error(new Error('Missing token. No token found in config file, token file, or env variable.'));
+            process.exit(1);
+        }
+    }
 
 	const manager = new ShardingManager(path.join(__dirname, '..', 'bot.js'), { token: token });
 
