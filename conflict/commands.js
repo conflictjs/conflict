@@ -156,7 +156,7 @@ export class InteractionResponse {
         return this.privateReply(...options);
     }
     privateReply (...options) {
-        if (options[0] instanceof String) options[0] = { content: options[0], ephemeral: true };
+        if (typeof options[0] === 'string') options[0] = { content: options[0], ephemeral: true };
         if (options[0] && options[0].toString() == '[object Object]') options[0].ephemeral = true;
         return this.reply(...options);
     }
