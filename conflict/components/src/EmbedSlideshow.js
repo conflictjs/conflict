@@ -1,6 +1,9 @@
 import ActionRow from './ActionRow.js';
 import Button from './Button.js';
 
+/**
+ * Unfinished
+ */
 export default function EmbedSlideshow ({ embeds }) {
     let activeEmbed = embeds[0];
     return (
