@@ -15,6 +15,11 @@ process.argv.shift();
 global.__ConflictENV = {};
 
 (async () => {
+    if (process.argv[0] == 'help' || process.argv.includes('-h') || process.argv.includes('--h') || process.argv.includes('-help') || process.argv.includes('--help')) {
+        stump.info('Please view documentation at https://conflict.js.org/docs');
+        return;
+    }
+
     if (process.argv[0] == 'dev') {
         await import(__dirname + '/devserver/index.js');
     } else if (process.argv[0] == 'build') {
