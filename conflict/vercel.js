@@ -39,12 +39,14 @@ export const finish = () => {
             if (process.env.TOKEN && process.env.APPLICATION_ID) {
                 stump.info('Registering commands to Discord');
 
-                await rest.put(Routes.applicationCommands(process.env.APPLICATION_ID), { body: [
+                const output = await rest.put(Routes.applicationCommands(process.env.APPLICATION_ID), { body: [
                     {
                         name: 'vercel',
                         description: 'Test Conflict with Vercel'
                     }
                 ] });
+
+                stump.info(output);
             }
 
             stump.success('Finished build process');
