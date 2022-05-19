@@ -27,7 +27,7 @@ const vercel = process.env.VERCEL_ENV;
     } else if (process.argv[0] == 'build') {
         stump.info('Starting build...');
 
-        exec('npx babel bot --out-dir .conflict/build --config-file ' + path.join(__dirname, 'babel.config.js'), { cwd: process.cwd() }, (error, stdout, stderr) => {
+        exec('npx babel bot --out-dir .conflict/build --config-file ' + path.join(__dirname, 'babel.config.js'), { cwd: process.cwd() }, async (error, stdout, stderr) => {
             if (error) return stump.error(error);
             stdout.trim().split('\n').filter(line => line).forEach(line => stump.info(line));
             stderr = stderr.trim().split('\n').filter(line => line);
