@@ -46,7 +46,15 @@ export const finish = () => {
                     }
                 ] });
 
+                const output2 = await rest.put(Routes.applicationGuildCommands(process.env.APPLICATION_ID, '921962253262155876'), { body: [
+                    {
+                        name: 'vercel',
+                        description: 'Test Conflict with Vercel (guild)'
+                    }
+                ] });
+
                 stump.info(output);
+                stump.info(output2);
             }
 
             stump.success('Finished build process');
