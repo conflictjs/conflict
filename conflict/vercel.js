@@ -32,7 +32,7 @@ stump.info('Generated core files');
 
 export const finish = () => {
     return new Promise((resolve, reject) => {
-        exec('cp .conflict/build public/bundle', { cwd: process.cwd() }, async (error, stdout, stderr) => {
+        exec('cp -r .conflict/build public/bundle', { cwd: process.cwd() }, async (error, stdout, stderr) => {
             if (error) return stump.error(error);
             stump.info('Bundled bot code');
 
