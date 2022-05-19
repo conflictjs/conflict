@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
+    <title>Conflict × Vercel</title>
+</head>
+<body>
+    <h1>Conflict × Vercel</h1>
+    <p>Congrats on deploying Conflict to Vercel! 🎉</p>
+    <p>Here are some next steps:</p>
+    <ul>
+        <li>Configure your bot to use this HTTP endpoint: <code id="endpoint">loading...</code></li>
+        <li>Make sure your bot works without relying on Conflict Events</li>
+        <li>Test out your bot now that it's deployed to Vercel</li>
+    </ul>
+    <p>It's suggested that you use different bots for testing and deployment to avoid issues with the HTTP endpoint while testing.</p>
+    <footer>
+        <small>Page created with <a href="https://watercss.kognise.dev/" target="_blank">water.css</a></small>
+    </footer>
+    <script>
+        document.getElementById('endpoint').innerText = `https://${window.location.host}/api/discord`;
+    </script>
+</body>
+</html>
