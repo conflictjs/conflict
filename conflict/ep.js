@@ -14,6 +14,8 @@ process.argv.shift();
 
 global.__ConflictENV = {};
 
+const vercel = process.env.VERCEL_ENV;
+
 (async () => {
     if (process.argv[0] == 'help' || process.argv.includes('-h') || process.argv.includes('--h') || process.argv.includes('-help') || process.argv.includes('--help')) {
         stump.info('Please view documentation at https://conflict.js.org/docs');
@@ -24,12 +26,19 @@ global.__ConflictENV = {};
         await import(__dirname + '/devserver/index.js');
     } else if (process.argv[0] == 'build') {
         stump.info('Starting build...');
+
         exec('npx babel bot --out-dir .conflict/build --config-file ' + path.join(__dirname, 'babel.config.js'), { cwd: process.cwd() }, (error, stdout, stderr) => {
             if (error) return stump.error(error);
             stdout.trim().split('\n').filter(line => line).forEach(line => stump.info(line));
             stderr = stderr.trim().split('\n').filter(line => line);
             stderr.forEach(line => stump.warn(line));
-            stump.info(`Build completed with ${stderr.length} errors`);
+            stump.success(`Build completed with ${stderr.length} errors`);
+
+            if (vercel) {
+                stump.info('Deploying to Vercel will disable events and only listen for commands');
+                const { finish } = await import('./vercel.js');
+                if (finish) await finish();
+            }
         });
     } else {
         
