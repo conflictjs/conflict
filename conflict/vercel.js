@@ -21,18 +21,18 @@ if (process.env.TOKEN) rest = new REST({ version: '9' }).setToken(process.env.TO
 
 fs.mkdirSync(path.join(process.cwd(), 'public')); // Create / re-create the public folder
 
-fs.mkdirSync(path.join(process.cwd(), 'public', 'api')); // Create api routes folder
-fs.mkdirSync(path.join(process.cwd(), 'public', 'core')); // Create internals folder
+fs.mkdirSync(path.join(process.cwd(), 'api')); // Create api routes folder
+fs.mkdirSync(path.join(process.cwd(), 'core')); // Create internals folder
 
-fs.writeFileSync(path.join(process.cwd(), 'public', 'api', 'discord.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'api.js'), 'utf8'), 'utf8');
-fs.writeFileSync(path.join(process.cwd(), 'public', 'core', 'dispatch.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'dispatch.js'), 'utf8'), 'utf8');
+fs.writeFileSync(path.join(process.cwd(), 'api', 'discord.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'api.js'), 'utf8'), 'utf8');
+fs.writeFileSync(path.join(process.cwd(), 'core', 'dispatch.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'dispatch.js'), 'utf8'), 'utf8');
 fs.writeFileSync(path.join(process.cwd(), 'public', 'index.html'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'index.html'), 'utf8'), 'utf8');
 
 stump.info('Generated core files');
 
 export const finish = () => {
     return new Promise((resolve, reject) => {
-        exec('cp -r .conflict/build public/bundle', { cwd: process.cwd() }, async (error, stdout, stderr) => {
+        exec('cp -r .conflict/build core/bundle', { cwd: process.cwd() }, async (error, stdout, stderr) => {
             if (error) return stump.error(error);
             stump.info('Bundled bot code');
 
