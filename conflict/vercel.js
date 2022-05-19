@@ -26,7 +26,7 @@ fs.mkdirSync(path.join(process.cwd(), 'public', 'core')); // Create internals fo
 
 fs.writeFileSync(path.join(process.cwd(), 'public', 'api', 'discord.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'api.js'), 'utf8'), 'utf8');
 fs.writeFileSync(path.join(process.cwd(), 'public', 'core', 'dispatch.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'dispatch.js'), 'utf8'), 'utf8');
-fs.writeFileSync(path.join(process.cwd(), 'public', 'api', 'index.html'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'index.html'), 'utf8'), 'utf8');
+fs.writeFileSync(path.join(process.cwd(), 'public', 'index.html'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'index.html'), 'utf8'), 'utf8');
 
 stump.info('Generated core files');
 
