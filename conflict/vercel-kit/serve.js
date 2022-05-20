@@ -7,7 +7,7 @@ const {
     verifyKey,
 } = require("discord-interactions");
 
-const { dispatch } = require('../core/dispatch.js');
+const { dispatch } = require('./dispatch.js');
 
 module.exports = async (request, response) => {
     if (request.method === "POST") {
