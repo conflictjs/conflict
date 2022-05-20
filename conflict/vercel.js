@@ -19,6 +19,7 @@ if (fs.existsSync(path.join(process.cwd(), '.vercel'))) {
 let rest;
 if (process.env.TOKEN) rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
+fs.mkdirSync(path.join(process.cwd(), '.vercel'));
 fs.mkdirSync(path.join(process.cwd(), '.vercel', 'output'));
 fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'config.json'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'config.json'), 'utf8'), 'utf8');
 
