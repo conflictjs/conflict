@@ -41,6 +41,7 @@ export const finish = () => {
             if (error) return stump.error(error);
             stump.info('Installed modules to function runtime');
 
+            let commands = {};
 
             let commandsPath = path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'bundle', 'commands');
             if (fs.existsSync(commandsPath)) {
