@@ -11,29 +11,33 @@ import typesv9 from 'discord-api-types/v9'
 const { Routes } = typesv9;
 const __dirname = dirname(import.meta);
 
-if (fs.existsSync(path.join(process.cwd(), 'public'))) {
-    fs.rmSync(path.join(process.cwd(), 'public'), { recursive: true, force: true });
+if (fs.existsSync(path.join(process.cwd(), '.vercel'))) {
+    fs.rmSync(path.join(process.cwd(), '.vercel'), { recursive: true, force: true });
     // Remove public folder if it exists
 }
 
 let rest;
 if (process.env.TOKEN) rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
-fs.mkdirSync(path.join(process.cwd(), 'public')); // Create / re-create the public folder
+fs.mkdirSync(path.join(process.cwd(), '.vercel', 'output'));
+fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'config.json'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'config.json'), 'utf8'), 'utf8');
 
-fs.mkdirSync(path.join(process.cwd(), 'api')); // Create api routes folder
-fs.mkdirSync(path.join(process.cwd(), 'core')); // Create internals folder
+fs.mkdirSync(path.join(process.cwd(), '.vercel', 'output', 'static'));
+fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'static', 'index.html'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'index.html'), 'utf8'), 'utf8');
 
-fs.writeFileSync(path.join(process.cwd(), 'api', 'discord.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'api.js'), 'utf8'), 'utf8');
-fs.writeFileSync(path.join(process.cwd(), 'core', 'dispatch.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'dispatch.js'), 'utf8'), 'utf8');
-fs.writeFileSync(path.join(process.cwd(), 'public', 'index.html'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'index.html'), 'utf8'), 'utf8');
+fs.mkdirSync(path.join(process.cwd(), '.vercel', 'output', 'functions'));
+fs.mkdirSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func'));
+fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', '.vc-config.json'), fs.readFileSync(path.join(__dirname, 'vercel-kit', '.vc-config.json'), 'utf8'), 'utf8');
+fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'serve.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'serve.js'), 'utf8'), 'utf8');
+fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'dispatch.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'dispatch.js'), 'utf8'), 'utf8');
 
 stump.info('Generated core files');
 
 export const finish = () => {
     return new Promise((resolve, reject) => {
-        exec('cp -r .conflict/build core/bundle', { cwd: process.cwd() }, async (error, stdout, stderr) => {
+        exec('cp -r ./node_modules ./.vercel/output/functions/discord.func/node_modules && cp -r ./.conflict/build ./.vercel/output/functions/discord.func/bundle', { cwd: process.cwd() }, async (error, stdout, stderr) => {
             if (error) return stump.error(error);
+            stump.info('Installed modules to function runtime');
             stump.info('Bundled bot code');
 
             if (process.env.TOKEN && process.env.APPLICATION_ID) {

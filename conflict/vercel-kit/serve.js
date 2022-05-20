@@ -35,13 +35,13 @@ module.exports = async (request, response) => {
                 type: InteractionResponseType.PONG,
             });
 
-        } else if (message.type === InteractionType.APPLICATION_COMMAND) {
-            response.status(200).send({
-                type: 4,
-                data: {
-                    content: "Hello!",
-                },
-            });
+        } else {
+            const output = await dispatch(message);
+            if (output && output.___status) {
+                response.status(output.status).send(output.payload);
+            } else {
+                response.status(200).send(output);
+            }
         }
     } else {
         response.status(405).send({ error: "Method not allowed" });
