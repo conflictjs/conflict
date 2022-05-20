@@ -9,7 +9,7 @@ const {
 
 function status (...args) {
     if (args.length === 0) return { ___status: true, status: 200, payload: args[0] };
-    const code = 200, payload = {};
+    let code = 200, payload = {};
 
     if ((args[0] + '').length === 3) {
         code = args[0];
