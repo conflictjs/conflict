@@ -41,6 +41,9 @@ export const finish = () => {
             stump.info('Installed modules to function runtime');
             stump.info('Bundled bot code');
 
+            process.env.ENABLE_VC_BUILD = '1';
+            stump.info('Registered v3 build with Vercel');
+
             if (process.env.TOKEN && process.env.APPLICATION_ID) {
                 stump.info('Registering commands to Discord');
 
