@@ -7,6 +7,8 @@ const {
     verifyKey,
 } = require("discord-interactions");
 
+const commands = require('./commands.json');
+
 function status (...args) {
     if (args.length === 0) return { ___status: true, status: 200, payload: args[0] };
     let code = 200, payload = {};
@@ -29,7 +31,7 @@ module.exports.dispatch = async (message) => {
         return status(200, {
             type: 4,
             data: {
-                content: "Hello! You can debug the following data:\n\n```json\n" + JSON.stringify(message, null, 4).substring(0, 1900) + "\n```",
+                content: "Hello! You can debug the following data:\n\n```json\n" + JSON.stringify({ message, commands }, null, 4).substring(0, 1900) + "\n```",
             },
         });
     } else {
