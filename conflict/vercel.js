@@ -59,6 +59,8 @@ export const finish = () => {
                 }
             }
 
+            console.log({ commands });
+
             let publicCommands = [];
             let guildCommands = {};
             let guilds = [];
