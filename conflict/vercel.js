@@ -95,10 +95,10 @@ export const finish = () => {
 
                 for (const guild in guildCommands) {
                     const commandsForGuild = guildCommands[guild];
-                    await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: commandsForGuild })
+                    await rest.put(Routes.applicationGuildCommands(process.env.APPLICATION_ID, guild), { body: commandsForGuild })
                 }
 
-                await rest.put(Routes.applicationCommands(client.user.id), { body: publicCommands });
+                await rest.put(Routes.applicationCommands(process.env.APPLICATION_ID), { body: publicCommands });
 
                 stump.info(fs.readdirSync(process.cwd()));
             } else stump.warn('Did not register commands to Discord');
