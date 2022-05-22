@@ -44,6 +44,8 @@ export const finish = () => {
             let commands = {};
 
             let commandsPath = path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'bundle', 'commands');
+
+            console.log({commandsPath, exists: fs.existsSync(commandsPath)});
             if (fs.existsSync(commandsPath)) {
                 let files = fs.readdirSync(commandsPath);
                 let filePaths = files.map(file => path.join(commandsPath, file));
