@@ -37,31 +37,29 @@ stump.info('Generated core files');
 
 export const finish = () => {
     return new Promise((resolve, reject) => {
+        stump.info('Installing modules to function runtime');
+
         exec('cp -r ./node_modules ./.vercel/output/functions/discord.func/node_modules && cp -r ./.conflict/build ./.vercel/output/functions/discord.func/bundle', { cwd: process.cwd() }, async (error, stdout, stderr) => {
             if (error) return stump.error(error);
-            stump.info('Installed modules to function runtime');
+            stump.info('Installed modules');
 
             let commands = {};
 
             let commandsPath = path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'bundle', 'commands');
 
-            console.log({commandsPath, exists: fs.existsSync(commandsPath)});
             if (fs.existsSync(commandsPath)) {
                 let files = fs.readdirSync(commandsPath);
                 let filePaths = files.map(file => path.join(commandsPath, file));
                 for (const file of filePaths) {
                     if (file.endsWith('.js') || file.endsWith('.cjs') || file.endsWith('.mjs')) {
                         let fileData = await import(file + '?r=' + Math.random().toString(36).substring(3));
-
-                        if (fileData.default && fileData.default instanceof Command) {
+                        if (fileData.default && fileData.default.constructor.name === 'Command') {
                             let command = fileData.default;
                             commands[command.name] = command;
                         }
                     }
                 }
             }
-
-            console.log({ commands });
 
             let publicCommands = [];
             let guildCommands = {};
@@ -92,20 +90,18 @@ export const finish = () => {
 
             fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'commands.json'), JSON.stringify({ guildCommands, publicCommands }, null, 4), 'utf8');
 
-            stump.info('Bundled commands');
-
             if (process.env.TOKEN && process.env.APPLICATION_ID) {
                 stump.info('Registering commands to Discord');
 
-                const output = await rest.put(Routes.applicationGuildCommands(process.env.APPLICATION_ID, '921962253262155876'), { body: [
-                    {
-                        name: 'vercel',
-                        description: 'Test Conflict with Vercel (guild)'
-                    }
-                ] });
+                for (const guild in guildCommands) {
+                    const commandsForGuild = guildCommands[guild];
+                    await rest.put(Routes.applicationGuildCommands(client.user.id, guild), { body: commandsForGuild })
+                }
+
+                await rest.put(Routes.applicationCommands(client.user.id), { body: publicCommands });
 
                 stump.info(fs.readdirSync(process.cwd()));
-            }
+            } else stump.warn('Did not register commands to Discord');
 
             stump.success('Finished build process');
 

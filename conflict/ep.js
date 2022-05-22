@@ -14,7 +14,7 @@ process.argv.shift();
 
 global.__ConflictENV = {};
 
-const vercel = process.env.VERCEL_ENV;
+const vercel = process.env.VERCEL_ENV || process.argv.includes('-vercel') || process.argv.includes('--vercel') || process.argv.includes('-V') || process.argv.includes('--V');
 
 (async () => {
     if (process.argv[0] == 'help' || process.argv.includes('-h') || process.argv.includes('--h') || process.argv.includes('-help') || process.argv.includes('--help')) {

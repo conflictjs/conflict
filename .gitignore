@@ -7,3 +7,11 @@ ignore
 create-conflict-app/token
 conflict/token
 token
+*/.vercel/output
+.vercel/output
+*/.vercel/output/*
+.vercel/output/*
+*/node_modules
+node_modules/*
+*/node_modules/*
+node_modules
