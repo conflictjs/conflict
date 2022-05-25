@@ -6,6 +6,16 @@ const {
     InteractionType,
     verifyKey,
 } = require("discord-interactions");
+const {
+    AutocompleteInteraction,
+    ButtonInteraction,
+    CommandInteractionButtonInteraction,
+    MessageContextMenuCommandInteractionButtonInteraction,
+    SelectMenuInteractionButtonInteraction,
+    UserContextMenuCommandInteractionButtonInteraction,
+    Constants
+ } = require("discord.js");
+ const { Events, InteractionTypes, MessageComponentTypes, ApplicationCommandTypes } = Constants;
 
 const commands = require('./commands.json');
 
@@ -28,6 +38,55 @@ function status (...args) {
 
 module.exports.dispatch = async (message) => {
     if (message.type === InteractionType.APPLICATION_COMMAND) {
+        const data = message;
+
+// lmaoooo stolen from https://github.com/discordjs/discord.js/blob/033151cf92fe43536b8a4c0f4d7d9ed75a2095c5/packages/discord.js/src/client/actions/InteractionCreate.js
+
+
+
+        let InteractionType;
+        switch (data.type) {
+          case InteractionTypes.APPLICATION_COMMAND:
+            switch (data.data.type) {
+              case ApplicationCommandTypes.CHAT_INPUT:
+                InteractionType = CommandInteraction;
+                break;
+              case ApplicationCommandTypes.USER:
+                InteractionType = UserContextMenuCommandInteraction;
+                break;
+              case ApplicationCommandTypes.MESSAGE:
+                InteractionType = MessageContextMenuCommandInteraction;
+                break;
+              default:
+                console.log('Received unknown type');
+                return;
+            }
+            break;
+          case InteractionTypes.MESSAGE_COMPONENT:
+            switch (data.data.component_type) {
+              case MessageComponentTypes.BUTTON:
+                InteractionType = ButtonInteraction;
+                break;
+              case MessageComponentTypes.SELECT_MENU:
+                InteractionType = SelectMenuInteraction;
+                break;
+              default:
+                console.log('Received unknown type');
+                return;
+            }
+            break;
+          case InteractionTypes.APPLICATION_COMMAND_AUTOCOMPLETE:
+            InteractionType = AutocompleteInteraction;
+            break;
+          default:
+            console.log('Received unknown type');
+            return;
+        }
+    
+        const interaction = new InteractionType(client, data);
+    
+        await interaction.reply('Success.\n\n`CODE: 200.1`');
+
         return status(200, {
             type: 4,
             data: {

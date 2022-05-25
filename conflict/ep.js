@@ -23,6 +23,7 @@ const vercel = process.env.VERCEL_ENV || process.argv.includes('-vercel') || pro
     }
 
     if (process.argv[0] == 'dev') {
+        if (global.__ConflictReplitRunDev) delete global.__ConflictReplitRunDev;
         await import(__dirname + '/devserver/index.js');
     } else if (process.argv[0] == 'build') {
         stump.info('Starting build...');
