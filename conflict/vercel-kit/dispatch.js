@@ -89,6 +89,57 @@ module.exports.dispatch = async (message) => {
     
         const interaction = new InteractionType(client, data);
     
+
+
+        if (interaction.isCommand()) {
+            if (commands[interaction.commandName]) {
+                let command = commands[interaction.commandName];
+                try {
+                    let output = await command.execute(new InteractionResponse(interaction));
+                    if (output instanceof Promise) output = await output;
+                } catch (err) {
+
+                    stump.error(err);
+                    try {
+                        if (errorHandler) return errorHandler(err, interaction);
+                        const file = getFile(err);
+                        interaction.reply({ embeds: [
+                            new MessageEmbed()
+                                .setColor('#ff4444')
+                                .setTitle('Command Error')
+                                .setDescription(file + ' ```' + cleanLines(err.stack, 4) + '```')
+                                .setTimestamp()
+                        ] });
+                    } catch (nestedErr) {
+                        
+                        stump.error('Conflict had a hard time figuring this one out.', nestedErr);
+                        if (errorHandler) return errorHandler(err, interaction);
+                        try {
+                            interaction.channel.send(
+                                new MessageEmbed()
+                                    .setColor('#ff4444')
+                                    .setTitle('Command Error')
+                                    .setDescription('```' + err.stack + '```')
+                                    .setTimestamp()
+                            );
+                        } catch (nestedNestedErr) {
+                            stump.error('Nested error handling failed.');
+                        }
+                    }
+                }
+            } else {
+                interaction.reply({ embeds: [
+                    new MessageEmbed()
+                        .setColor('#ff4444')
+                        .setTitle('Command Error')
+                        .setDescription('```' + `Conflict Erorr: CommandNotFound` + '```')
+                        .setTimestamp()
+                ] });
+            }
+        }
+
+
+
         await interaction.reply('Success.\n\n`CODE: 200.1`');
 
         return status(200, {
