@@ -16,6 +16,7 @@ const {
     SelectMenuInteraction,
     UserContextMenuCommandInteraction,
     MessageContextMenuCommandInteraction,
+    MessageEmbed,
     Constants
 } = Discord;
 const { Events, InteractionTypes, MessageComponentTypes, ApplicationCommandTypes } = Constants;
