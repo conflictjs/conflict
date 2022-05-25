@@ -96,7 +96,7 @@ module.exports.dispatch = async (message) => {
         if (interaction.isCommand()) {
             console.log({ commands, name: interaction.commandName });
             if (commands[interaction.commandName]) {
-                const file = path.join('bundle', 'commands', commands[interaction.commandName]._filePath);
+                const file = path.join('.', 'bundle', 'commands', commands[interaction.commandName]._filePath);
                 const fileData = await import(file);
                 let command = fileData.default;
                 try {
