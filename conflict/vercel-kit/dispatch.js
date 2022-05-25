@@ -9,10 +9,8 @@ const {
 const {
     AutocompleteInteraction,
     ButtonInteraction,
-    CommandInteractionButtonInteraction,
-    MessageContextMenuCommandInteractionButtonInteraction,
-    SelectMenuInteractionButtonInteraction,
-    UserContextMenuCommandInteractionButtonInteraction,
+    CommandInteraction,
+    ButtonInteraction,
     Constants
  } = require("discord.js");
  const { Events, InteractionTypes, MessageComponentTypes, ApplicationCommandTypes } = Constants;
