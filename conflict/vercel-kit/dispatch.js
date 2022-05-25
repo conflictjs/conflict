@@ -91,6 +91,7 @@ module.exports.dispatch = async (message) => {
         const interaction = new InteractionType(client, data);
     
         if (interaction.isCommand()) {
+            console.log({ commands, name: interaction.commandName });
             if (commands[interaction.commandName]) {
                 let command = commands[interaction.commandName];
                 try {
