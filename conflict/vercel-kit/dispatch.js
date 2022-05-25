@@ -6,14 +6,18 @@ const {
     InteractionType,
     verifyKey,
 } = require("discord-interactions");
+const Discord = require('discord.js');
 const {
     AutocompleteInteraction,
     ButtonInteraction,
     CommandInteraction,
-    ButtonInteraction,
+    SelectMenuInteraction,
+    UserContextMenuCommandInteraction,
+    MessageContextMenuCommandInteraction,
     Constants
- } = require("discord.js");
- const { Events, InteractionTypes, MessageComponentTypes, ApplicationCommandTypes } = Constants;
+} = Discord;
+const { Events, InteractionTypes, MessageComponentTypes, ApplicationCommandTypes } = Constants;
+
 
 const commands = require('./commands.json');
 
