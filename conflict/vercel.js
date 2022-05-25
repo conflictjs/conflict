@@ -55,6 +55,7 @@ export const finish = () => {
                         let fileData = await import(file + '?r=' + Math.random().toString(36).substring(3));
                         if (fileData.default && fileData.default.constructor.name === 'Command') {
                             let command = fileData.default;
+                            command._filePath = file;
                             commands[command.name] = command;
                         }
                     }
@@ -88,7 +89,7 @@ export const finish = () => {
                 }
             }
 
-            fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'commands.json'), JSON.stringify({ guildCommands, publicCommands }, null, 4), 'utf8');
+            fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'commands.json'), JSON.stringify({ guildCommands, publicCommands, all: commands }, null, 4), 'utf8');
 
             if (process.env.TOKEN && process.env.APPLICATION_ID) {
                 stump.info('Registering commands to Discord');

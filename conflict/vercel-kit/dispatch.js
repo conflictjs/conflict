@@ -7,6 +7,8 @@ const {
     verifyKey,
 } = require("discord-interactions");
 
+const path = require('path');
+
 const Discord = require('discord.js');
 
 const {
@@ -21,7 +23,8 @@ const {
 } = Discord;
 const { Events, InteractionTypes, MessageComponentTypes, ApplicationCommandTypes } = Constants;
 
-const commands = require('./commands.json');
+const { all } = require('./commands.json');
+const commands = all;
 
 function status (...args) {
     if (args.length === 0) return { ___status: true, status: 200, payload: args[0] };
@@ -93,7 +96,9 @@ module.exports.dispatch = async (message) => {
         if (interaction.isCommand()) {
             console.log({ commands, name: interaction.commandName });
             if (commands[interaction.commandName]) {
-                let command = commands[interaction.commandName];
+                const file = path.join('bundle', 'commands', commands[interaction.commandName]._filePath);
+                const fileData = await import(file);
+                let command = fileData.default;
                 try {
                     let output = await command.execute(new InteractionResponse(interaction));
                     if (output instanceof Promise) output = await output;
