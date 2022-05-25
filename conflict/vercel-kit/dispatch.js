@@ -108,7 +108,7 @@ module.exports.dispatch = async (message) => {
 }
 
 function generateClient (token) {
-    const previousValue = JSON.parse(JSON.stringify(process.env.DISCORD_TOKEN));
+    const previousValue = process.env.DISCORD_TOKEN === undefined ? undefined : process.env.DISCORD_TOKEN;
     process.env.DISCORD_TOKEN = token;
     const client = new Discord.Client();
     process.env.DISCORD_TOKEN = previousValue;
