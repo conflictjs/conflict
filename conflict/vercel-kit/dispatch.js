@@ -6,7 +6,9 @@ const {
     InteractionType,
     verifyKey,
 } = require("discord-interactions");
+
 const Discord = require('discord.js');
+
 const {
     AutocompleteInteraction,
     ButtonInteraction,
@@ -17,7 +19,6 @@ const {
     Constants
 } = Discord;
 const { Events, InteractionTypes, MessageComponentTypes, ApplicationCommandTypes } = Constants;
-
 
 const commands = require('./commands.json');
 
@@ -41,6 +42,7 @@ function status (...args) {
 module.exports.dispatch = async (message) => {
     if (message.type === InteractionType.APPLICATION_COMMAND) {
         const data = message;
+        const client = generateClient(process.env.TOKEN);
 
 // lmaoooo stolen from https://github.com/discordjs/discord.js/blob/033151cf92fe43536b8a4c0f4d7d9ed75a2095c5/packages/discord.js/src/client/actions/InteractionCreate.js
 
@@ -103,4 +105,12 @@ module.exports.dispatch = async (message) => {
             },
         })
     }
+}
+
+function generateClient (token) {
+    const previousValue = JSON.parse(JSON.stringify(process.env.DISCORD_TOKEN));
+    process.env.DISCORD_TOKEN = token;
+    const client = new Discord.Client();
+    process.env.DISCORD_TOKEN = previousValue;
+    return client;
 }
