@@ -89,8 +89,6 @@ module.exports.dispatch = async (message) => {
     
         const interaction = new InteractionType(client, data);
     
-
-
         if (interaction.isCommand()) {
             if (commands[interaction.commandName]) {
                 let command = commands[interaction.commandName];
@@ -103,7 +101,7 @@ module.exports.dispatch = async (message) => {
                     try {
                         if (errorHandler) return errorHandler(err, interaction);
                         const file = getFile(err);
-                        interaction.reply({ embeds: [
+                        await interaction.reply({ embeds: [
                             new MessageEmbed()
                                 .setColor('#ff4444')
                                 .setTitle('Command Error')
@@ -115,7 +113,7 @@ module.exports.dispatch = async (message) => {
                         stump.error('Conflict had a hard time figuring this one out.', nestedErr);
                         if (errorHandler) return errorHandler(err, interaction);
                         try {
-                            interaction.channel.send(
+                            await interaction.channel.send(
                                 new MessageEmbed()
                                     .setColor('#ff4444')
                                     .setTitle('Command Error')
@@ -128,7 +126,7 @@ module.exports.dispatch = async (message) => {
                     }
                 }
             } else {
-                interaction.reply({ embeds: [
+                await interaction.reply({ embeds: [
                     new MessageEmbed()
                         .setColor('#ff4444')
                         .setTitle('Command Error')
@@ -137,10 +135,6 @@ module.exports.dispatch = async (message) => {
                 ] });
             }
         }
-
-
-
-        await interaction.reply('Success.\n\n`CODE: 200.1`');
 
         return status(200, {
             type: 4,
