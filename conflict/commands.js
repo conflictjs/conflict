@@ -86,7 +86,7 @@ export class InteractionResponse {
 
         this.values = interaction.values;
         
-        if (interaction.isModalSubmit) {
+        if (interaction.isModalSubmit && interaction.components) {
             let values = {};
             interaction.components.map(component => component.components[0]).forEach(component => {
                 values[component.custom_id] = component.value;
