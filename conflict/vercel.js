@@ -12,6 +12,8 @@ import Command from './commands.js';
 const { Routes } = typesv9;
 const __dirname = dirname(import.meta);
 
+const selfVersion = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
+
 if (fs.existsSync(path.join(process.cwd(), '.vercel'))) {
     fs.rmSync(path.join(process.cwd(), '.vercel'), { recursive: true, force: true });
     // Remove public folder if it exists
@@ -40,7 +42,7 @@ export const finish = () => {
     return new Promise((resolve, reject) => {
         stump.info('Installing modules to function runtime');
 
-        exec('cp -r ./node_modules ./.vercel/output/functions/discord.func/node_modules && cp -r ./.conflict/build ./.vercel/output/functions/discord.func/bundle', { cwd: process.cwd() }, async (error, stdout, stderr) => {
+        exec('cp -r ./node_modules ./.vercel/output/functions/discord.func/node_modules && cp -r ./.conflict/build ./.vercel/output/functions/discord.func/bundle && npm i @conflict/beta@' + selfVersion, { cwd: process.cwd() }, async (error, stdout, stderr) => {
             if (error) return stump.error(error);
             stump.info('Installed modules');
 

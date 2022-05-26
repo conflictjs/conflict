@@ -9,6 +9,7 @@ const {
 } = DiscordInteractions;
 
 import path from 'path';
+import Command, { InteractionResponse } from '@conflict/beta/commands';
 
 import Discord from 'discord.js';
 const {
