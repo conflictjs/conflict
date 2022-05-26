@@ -106,7 +106,7 @@ export default async function (message) {
                     if (output instanceof Promise) output = await output;
                 } catch (err) {
 
-                    stump.error(err);
+                    console.error(err);
                     try {
                         if (errorHandler) return errorHandler(err, interaction);
                         const file = getFile(err);
@@ -119,7 +119,7 @@ export default async function (message) {
                         ] });
                     } catch (nestedErr) {
                         
-                        stump.error('Conflict had a hard time figuring this one out.', nestedErr);
+                        console.error('Conflict had a hard time figuring this one out.', nestedErr);
                         if (errorHandler) return errorHandler(err, interaction);
                         try {
                             await interaction.channel.send(
@@ -130,7 +130,7 @@ export default async function (message) {
                                     .setTimestamp()
                             );
                         } catch (nestedNestedErr) {
-                            stump.error('Nested error handling failed.');
+                            console.error('Nested error handling failed.');
                         }
                     }
                 }
