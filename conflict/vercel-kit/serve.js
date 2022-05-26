@@ -1,13 +1,14 @@
 // Code for running on Vercel. Not part of Conflict server or Conflict build scripts.
 
 
+import DiscordInteractions from 'discord-interactions';
 const {
     InteractionResponseType,
     InteractionType,
     verifyKey,
-} = require("discord-interactions");
+} = DiscordInteractions;
 
-const { dispatch } = require('./dispatch.js');
+import dispatch from './dispatch.js';
 
 module.exports = async (request, response) => {
     if (request.method === "POST") {

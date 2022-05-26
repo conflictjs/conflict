@@ -1,16 +1,16 @@
 // dispatch.js
 // Handles Discord interaction only; a complete level of abstraction above the server.
 
+import DiscordInteractions from 'discord-interactions';
 const {
     InteractionResponseType,
     InteractionType,
     verifyKey,
-} = require("discord-interactions");
+} = DiscordInteractions;
 
-const path = require('path');
+import path from 'path';
 
-const Discord = require('discord.js');
-
+import Discord from 'discord.js';
 const {
     AutocompleteInteraction,
     ButtonInteraction,
@@ -23,7 +23,9 @@ const {
 } = Discord;
 const { Events, InteractionTypes, MessageComponentTypes, ApplicationCommandTypes } = Constants;
 
-const { all } = require('./commands.json');
+import fs from 'fs';
+const { all } = JSON.parse(fs.readFileSync('commands.json', 'utf8'));
+
 const commands = all;
 
 function status (...args) {
@@ -43,7 +45,7 @@ function status (...args) {
     }
 }
 
-module.exports.dispatch = async (message) => {
+export default async function (message) {
     if (message.type === InteractionType.APPLICATION_COMMAND) {
         const data = message;
         const client = generateClient(process.env.TOKEN);
