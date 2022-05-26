@@ -10,6 +10,8 @@ const {
 
 import path from 'path';
 import Command, { InteractionResponse } from '@conflict/beta/commands';
+import View, { parseView } from '@conflict/beta/view';
+if (!global.__ConflictViewParser) global.__ConflictViewParser = parseView;
 
 import Discord from 'discord.js';
 const {
