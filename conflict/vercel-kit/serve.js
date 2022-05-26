@@ -10,7 +10,7 @@ const {
 
 import dispatch from './dispatch.js';
 
-module.exports = async (request, response) => {
+export default async function (request, response) {
     if (request.method === "POST") {
         const signature = request.headers["x-signature-ed25519"];
         const timestamp = request.headers["x-signature-timestamp"];
