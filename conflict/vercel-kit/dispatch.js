@@ -102,7 +102,7 @@ export default async function (message) {
             console.log({ commands, name: interaction.commandName });
             if (commands[interaction.commandName]) {
                 const file = './' + path.join( 'bundle', 'commands', commands[interaction.commandName]._filePath);
-                const fileData = await import(file);
+                const fileData = await import(global.__ConflictFilePrefix + file);
                 let command = fileData.default;
                 try {
                     let output = await command.execute(new InteractionResponse(interaction));

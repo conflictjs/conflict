@@ -13,6 +13,7 @@ process.argv.shift();
 process.argv.shift();
 
 global.__ConflictENV = {};
+global.__ConflictFilePrefix = process.platform === 'win32' ? 'file://' : '';
 
 const vercel = process.env.VERCEL_ENV || process.argv.includes('-vercel') || process.argv.includes('--vercel') || process.argv.includes('-V') || process.argv.includes('--V');
 
@@ -24,7 +25,7 @@ const vercel = process.env.VERCEL_ENV || process.argv.includes('-vercel') || pro
 
     if (process.argv[0] == 'dev') {
         if (global.__ConflictReplitRunDev) delete global.__ConflictReplitRunDev;
-        await import(__dirname + '/devserver/index.js');
+        await import(global.__ConflictFilePrefix + __dirname + '/devserver/index.js');
     } else if (process.argv[0] == 'build') {
         stump.info('Starting build...');
 
@@ -48,7 +49,7 @@ const vercel = process.env.VERCEL_ENV || process.argv.includes('-vercel') || pro
         if (global.__ConflictENV.verbose) process.env.CONFLICT_VERBOSE = "TRUE";
         let config;
         try {
-            config = await import(process.cwd() + '/conflict.config.js');
+            config = await import(global.__ConflictFilePrefix + process.cwd() + '/conflict.config.js');
         } catch (err) {
             return stump.error('Missing conflict.config.js');
         }

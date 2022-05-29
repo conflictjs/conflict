@@ -12,6 +12,7 @@ import Command from './commands.js';
 const { Routes } = typesv9;
 const __dirname = dirname(import.meta);
 
+global.__ConflictFilePrefix = process.platform === 'win32' ? 'file://' : '';
 const selfVersion = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
 
 if (fs.existsSync(path.join(process.cwd(), '.vercel'))) {
@@ -57,7 +58,7 @@ export const finish = () => {
                 for (const file of filePaths) {
                     const fileName = files[i];
                     if (file.endsWith('.js') || file.endsWith('.cjs') || file.endsWith('.mjs')) {
-                        let fileData = await import(file + '?r=' + Math.random().toString(36).substring(3));
+                        let fileData = await import(global.__ConflictFilePrefix + file + '?r=' + Math.random().toString(36).substring(3));
                         if (fileData.default && fileData.default.constructor.name === 'Command') {
                             let command = fileData.default;
                             command._filePath = fileName;

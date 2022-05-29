@@ -4,4 +4,4 @@ const __dirname = dirname(import.meta);
 
 stump.info("Running Conflict on Replit...");
 
-await import(__dirname + '/devserver/index.js');
+await import(global.__ConflictFilePrefix + __dirname + '/devserver/index.js');

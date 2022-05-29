@@ -22,6 +22,8 @@ import typesv9 from 'discord-api-types/v9'
 const { Routes } = typesv9;
 import { getFile, cleanLines } from './utils.js'
 
+global.__ConflictFilePrefix = process.platform === 'win32' ? 'file://' : '';
+
 let thinking = false;
 const finishThinking = () => {
     return new Promise(resolve => {
@@ -49,7 +51,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
     let config;
     try {
-        config = await import(process.cwd() + '/conflict.config.js');
+        config = await import(global.__ConflictFilePrefix + process.cwd() + '/conflict.config.js');
     } catch (err) {
         return stump.error('Missing conflict.config.js');
     }
@@ -100,7 +102,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
             let files = fs.readdirSync(eventsPath);
             let filePaths = files.map(file => path.join(eventsPath, file));
             for (const file of filePaths) {
-                if (file.endsWith('.js') || file.endsWith('.cjs') || file.endsWith('.mjs')) await import(file);
+                if (file.endsWith('.js') || file.endsWith('.cjs') || file.endsWith('.mjs')) await import(global.__ConflictFilePrefix + file);
             }
         }    
     }
@@ -120,7 +122,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
             let filePaths = files.map(file => path.join(commandsPath, file));
             for (const file of filePaths) {
                 if (file.endsWith('.js') || file.endsWith('.cjs') || file.endsWith('.mjs')) {
-                    let fileData = await import(file + '?r=' + Math.random().toString(36).substring(3));
+                    let fileData = await import(global.__ConflictFilePrefix +file + '?r=' + Math.random().toString(36).substring(3));
 
                     if (fileData.default && fileData.default instanceof Command) {
                         let command = fileData.default;
