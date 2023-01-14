@@ -178,10 +178,10 @@ export class InteractionResponse {
     }
     view (view, options) {
         if (!(view instanceof View)) view = new View(view);
-        view.applyTo((...args) => {
+        view.applyTo({ reply: (...args) => {
             this.onReply?.(...args);
             this.interaction.reply(...args);
-        }, options, true);
+        }}, options, true);
     }
     privateView (view, options) {
         view.ephemeral = true;
