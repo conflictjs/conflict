@@ -161,7 +161,7 @@ export default async function (message) {
         if (!resolved) resolve(false);
 
         });
-
+        console.log({vercelOutput})
         return status(200, vercelOutput);
     } else {
         return status(200, {
