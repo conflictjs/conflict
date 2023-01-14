@@ -126,7 +126,7 @@ export class View {
             console.log(this, options);
             let output = isInteraction ? channel.reply(this, options, ...attachments) : channel.send(this, ...attachments);
             if (output instanceof Promise) output = await output;
-            console.log({output})
+            console.log({output}, 'done')
             if (output instanceof Discord.Message) {
                 let hooks = $hooks;
                 for (const hook of hooks) {

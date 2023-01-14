@@ -181,14 +181,14 @@ export class InteractionResponse {
             data: view 
         }});
     }
-    view (view, options) {
+    async view (view, options) {
         if (!(view instanceof View)) view = new View(view);
         if (this.vercelConfig?.isVercel && false) {
             view.applyTo({ reply: (...args) => {
                 this.vercelConfig?.onReply?.(...args);
             }}, options, true, true);
         } else {
-            view.applyTo(this.interaction, options, true);
+            return await view.applyTo(this.interaction, options, true);
         }
     }
     privateView (view, options) {
