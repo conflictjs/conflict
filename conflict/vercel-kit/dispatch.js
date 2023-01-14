@@ -11,8 +11,7 @@ const {
 import path from 'path';
 import Command, { InteractionResponse } from '@conflict/beta/commands';
 import View, { parseView } from '@conflict/beta/view';
-if (!global.__ConflictViewParser) global.__ConflictViewParser = parseView;
-
+global.__ConflictViewParser = View.createElement;
 import Discord from 'discord.js';
 const {
     AutocompleteInteraction,
