@@ -141,7 +141,7 @@ export class InteractionResponse {
         if (this.vercelConfig?.isVercel) {
             return this.interaction.client.api.interactions(this.interaction.id, this.interaction.token).callback.post({ data: {
                 type: 4,
-                data: options[0],
+                data: { content: options[0] },
                 ...(options[0]?.ephemeral ? { flags: 1 << 6 } : {})
             }});
             return this.vercelConfig?.onReply?.({
