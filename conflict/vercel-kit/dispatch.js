@@ -112,7 +112,8 @@ export default async function (message) {
                 let command = fileData.default;
                 try {
                     let output = await command.execute(new InteractionResponse(interaction, (...data) => {
-                        if (!resolved) resolve([data]);
+                        console.log({data})
+                        if (!resolved) resolve(data);
                     }));
                     if (output instanceof Promise) output = await output;
                 } catch (err) {
