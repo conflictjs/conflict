@@ -192,8 +192,6 @@ export class InteractionResponse {
         if (!(view instanceof View)) view = new View(view);
         if (this.vercelConfig?.isVercel) {
             view.applyTo({ reply: (...args) => {
-                console.log('view!', args)
-                console.log(args[0], JSON.stringify(args[0], null, 4));
                 this.vercelConfig?.onReply?.(...args);
             }}, options, true, true);
         } else {

@@ -3,58 +3,6 @@ import deepEqual from 'deep-equal';
 import types from 'discord-api-types/v9';
 const { Routes } = types;
 
-export async function util_compareArrayItems (arr1, arr2, keys, nestedKeys) {
-    // TODO: Optimize to not use O(n^2) time complexity
-
-    const nonMatches = [];
-
-    for (const item1 of arr1) {
-        for (const item2 of arr2) {
-            let match = true;
-            for (const key of keys) {
-                if (item1[key] instanceof Array && typeof item1[key] == 'object' && util_compareArrayItems(item1[key], item2[key], nestedKeys).length) {
-                    match = false;
-                    break;
-                }
-                else if (item1[key] !== item2[key]) {
-                    match = false;
-                    break;
-                }
-            }
-            if (!match) nonMatches.push(arr1);
-        }
-    }
-    
-    return nonMatches;
-}
-
-export async function setGuildCommands (token, userId, guildId, commands) {
-    const rest = new REST({ version: '9' }).setToken(token);
-
-
-}
-
-export async function setGlobalCommands (token, userId, commands) {
-    return;
-    const rest = new REST({ version: '9' }).setToken(token);
-    const apiCommands = await rest.get(Routes.applicationCommands(userId));
-
-    const apiCommandNames = apiCommands.map(command => command.name);
-    const commandNames = commands.map(command => command.name);
-
-    const diffAdd = commands.filter(command => !apiCommandNames.includes(command.name));
-    const diffRemove = apiCommands.filter(command => !commandNames.includes(command.name));
-
-    const difModify = util_compareArrayItems(commands, apiCommands, [
-        'name',
-        'description',
-        'options',
-    ])
-
-    console.log(diffAdd, diffRemove);
-
-}
-
 export default class CommandManager {
     constructor (client, stump) {
         this.client = client;

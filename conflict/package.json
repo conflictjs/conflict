@@ -1,6 +1,6 @@
 {
   "name": "@conflict/beta",
-  "version": "0.9.24",
+  "version": "0.9.25",
   "description": "The first and only UI framework for Discord bots",
   "main": "exports.js",
   "scripts": {

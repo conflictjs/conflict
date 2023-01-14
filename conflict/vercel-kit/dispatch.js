@@ -104,7 +104,6 @@ export default async function (message) {
 
 
         if (interaction.isCommand()) {
-            console.log({ commands, name: interaction.commandName });
             if (commands[interaction.commandName]) {
                 const file = './' + path.join( 'bundle', 'commands', commands[interaction.commandName]._filePath);
                 const fileData = await import(file);
@@ -113,13 +112,9 @@ export default async function (message) {
                     let output = await command.execute(new InteractionResponse(interaction, {
                         isVercel: true,
                         onReply: data => {
-                            console.log({data});
-                            console.log({stringified: JSON.stringify(data)});
-                            for (const key in data) {
-                                console.log(key, data[key]);
-                            }
-                        if (!resolved) resolve(data);
-                    }}));
+                            if (!resolved) resolve(data);
+                        }
+                    }));
                     if (output instanceof Promise) output = await output;
                 } catch (err) {
 
@@ -164,7 +159,7 @@ export default async function (message) {
         if (!resolved) resolve(false);
 
         });
-        console.log({vercelOutput})
+        console.log(JSON.stringify({ vercelOutput }), null, 4);
         return status(200, vercelOutput);
     } else {
         return status(200, {
