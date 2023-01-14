@@ -193,7 +193,7 @@ export class InteractionResponse {
         if (this.onReply) {
             view.applyTo({ reply: (...args) => {
                 console.log('view!', args)
-                this.onReply?.(...args);
+                this.vercelConfig?.onReply?.(...args);
                 this.interaction.reply(...args);
             }}, options, true, true);
         } else {
