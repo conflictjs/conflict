@@ -102,6 +102,8 @@ export default async function (message) {
         
         console.log({
             cwd: process.cwd(),
+            ls: fs.readdirSync(process.cwd()),
+            
 
         })
         if (interaction.isCommand()) {
