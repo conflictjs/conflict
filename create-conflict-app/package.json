@@ -1,6 +1,6 @@
 {
   "name": "my-conflict-app",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A brand new project created with create-conflict-app",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,7 @@
     "@babel/preset-react": "^7.18.6"
   },
   "dependencies": {
+    "@conflict/beta": "^0.1.1",
     "chokidar": "^3.5.3"
   }
 }

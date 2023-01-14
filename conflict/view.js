@@ -120,6 +120,7 @@ export class View {
             }
         }
         this.applyTo = async function (channel, options, isInteraction, isVercel) {
+            console.log(this, JSON.stringify(this, null, 4), this.constructor.name);
             if (isVercel) {
                 console.log('isVercel');
                 console.log({ parsed, target });
