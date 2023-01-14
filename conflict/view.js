@@ -120,7 +120,7 @@ export class View {
             }
         }
         this.applyTo = async function (channel, options, isInteraction) {
-            let output = isInteraction ? channel.reply(this, options, ...attachments) : channel.send(this, ...attachments);
+            let output = isInteraction ? channel.reply(this.toObject(), options, ...attachments) : channel.send(this, ...attachments);
             if (output instanceof Promise) output = await output;
             if (output instanceof Discord.Message) {
                 let hooks = $hooks;
