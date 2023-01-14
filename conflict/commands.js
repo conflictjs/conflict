@@ -190,7 +190,7 @@ export class InteractionResponse {
     }
     view (view, options) {
         if (!(view instanceof View)) view = new View(view);
-        if (this.onReply) {
+        if (this.vercelConfig?.isVercel) {
             view.applyTo({ reply: (...args) => {
                 console.log('view!', args)
                 this.vercelConfig?.onReply?.(...args);
