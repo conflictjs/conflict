@@ -127,9 +127,9 @@ export default async function (message) {
                     }
                 } catch (err) {
 
-                    console.error(err);
+                    console.error(err, 'initialCatchError');
                     try {
-                        if (errorHandler) return errorHandler(err, interaction);
+                        if (errorHandler && false) return errorHandler(err, interaction);
                         const file = getFile(err);
                         await interaction.reply({ embeds: [
                             new MessageEmbed()
@@ -141,7 +141,7 @@ export default async function (message) {
                     } catch (nestedErr) {
                         
                         console.error('Conflict had a hard time figuring this one out.', nestedErr);
-                        if (errorHandler) return errorHandler(err, interaction);
+                        if (errorHandler && false) return errorHandler(err, interaction);
                         try {
                             await interaction.channel.send(
                                 new MessageEmbed()
