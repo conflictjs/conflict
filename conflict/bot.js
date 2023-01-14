@@ -21,7 +21,7 @@ import { REST } from '@discordjs/rest'
 import typesv9 from 'discord-api-types/v9'
 const { Routes } = typesv9;
 import { getFile, cleanLines } from './utils.js'
-import CommandManager, { setGlobalCommands } from './commandManager.js'
+import CommandManager from './commandManager.js'
 
 global.__ConflictFilePrefix = process.platform === 'win32' ? 'file://' : '';
 
