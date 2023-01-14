@@ -115,6 +115,7 @@ export default async function (message) {
                         isVercel: true,
                         onReply: data => {
                             console.log({data});
+                            console.log({stringified: JSON.stringify(data)})
                         if (!resolved) resolve(data);
                     }}));
                     if (output instanceof Promise) output = await output;
