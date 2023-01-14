@@ -12,7 +12,9 @@ import path from 'path';
 import Command, { InteractionResponse } from '@conflict/beta/commands';
 import View, { parseView } from '@conflict/beta/view';
 global.__ConflictViewParser = View.createElement;
+import { getFile, cleanLines } from './utils.js'
 global.__ConflictEnvironment = 'vercel';
+
 import Discord from 'discord.js';
 const {
     AutocompleteInteraction,
@@ -98,7 +100,14 @@ export default async function (message) {
         }
     
         const interaction = new InteractionType(client, data);
-        
+                
+        let config;
+        try {
+            config = await import(global.__ConflictFilePrefix + process.cwd() + '/conflict.config.js');
+        } catch (err) {
+            return stump.error('Missing conflict.config.js');
+        }
+        let { token, intents, errorHandler, plugins } = config.default;
         
         console.log({
             cwd: process.cwd(),
@@ -129,7 +138,7 @@ export default async function (message) {
 
                     console.error(err, 'initialCatchError');
                     try {
-                        // if (errorHandler && false) return errorHandler(err, interaction);
+                        if (errorHandler) return errorHandler(err, interaction);
                         const file = getFile(err);
                         await interaction.reply({ embeds: [
                             new MessageEmbed()
@@ -141,7 +150,7 @@ export default async function (message) {
                     } catch (nestedErr) {
                         
                         console.error('Conflict had a hard time figuring this one out.', nestedErr);
-                        // if (errorHandler && false) return errorHandler(err, interaction);
+                        if (errorHandler) return errorHandler(err, interaction);
                         try {
                             await interaction.channel.send(
                                 new MessageEmbed()

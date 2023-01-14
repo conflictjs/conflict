@@ -38,6 +38,7 @@ fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'dis
 fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'serve.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'serve.js'), 'utf8'), 'utf8');
 fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'dispatch.js'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'dispatch.js'), 'utf8'), 'utf8');
 fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'package.json'), fs.readFileSync(path.join(__dirname, 'vercel-kit', 'package.json'), 'utf8'), 'utf8');
+fs.writeFileSync(path.join(process.cwd(), '.vercel', 'output', 'functions', 'discord.func', 'conflict.config.js'), fs.readFileSync(path.join('.', 'conflict.config.js'), 'utf8'), 'utf8');
 
 stump.info('Generated core files');
 
