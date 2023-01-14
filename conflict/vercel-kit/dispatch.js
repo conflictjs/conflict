@@ -12,7 +12,6 @@ import path from 'path';
 import Command, { InteractionResponse } from '@conflict/beta/commands';
 import View, { parseView } from '@conflict/beta/view';
 global.__ConflictViewParser = View.createElement;
-import { getFile, cleanLines } from './utils.js'
 global.__ConflictEnvironment = 'vercel';
 
 import Discord from 'discord.js';
@@ -33,6 +32,48 @@ import fetch from 'node-fetch';
 const { all } = JSON.parse(fs.readFileSync('commands.json', 'utf8'));
 
 const commands = all;
+
+
+export function getFile (error) {
+    let output = 'Unable to find file location';
+    try {
+        let fileLine = error.stack.split('\n')[1];
+        let stackTrace = (fileLine.includes('(') && fileLine.includes(')')) ? fileLine.split('(')[1].split(')')[0] : fileLine.substring(fileLine.indexOf('at') + 3);
+        let lastColon = stackTrace.lastIndexOf(':');
+        let col = stackTrace.substring(lastColon + 1);
+        let filePath = stackTrace.substring(0, lastColon);
+        lastColon = filePath.lastIndexOf(':');
+        let line = +filePath.substring(lastColon + 1);
+        filePath = filePath.substring(0, lastColon);
+        if (filePath.startsWith('file://')) filePath = filePath.substring(7);
+        const fileData = fs.readFileSync(filePath, 'utf8');
+        let snippet = fileData.split('\n').slice(line - 4, line + 2).join('\n');
+        let lines = snippet.split('\n');
+        if (lines.length < 5) {
+            snippet = snippet;
+        } else {
+            lines = [
+                '// ' + path.basename(filePath) + ':' + (line - 3),
+                lines[0],
+                lines[1],
+                lines[2],
+                lines[3],
+                '//' + ' '.repeat(col - 3) + '^ ' + error.stack.split('\n')[0] + ' (:' + line + ':' + col + ')',
+                lines[4],
+                lines[5],
+                lines[6]
+            ];
+            snippet = lines.join('\n');
+        }
+        output = "```js\n" + snippet + "```";
+    } catch (err) {}
+    return output;
+}
+
+export function cleanLines (input, lines) {
+    return input.split('\n').splice(0, input.split('\n').length - lines).join('\n');
+}
+
 
 function status (...args) {
     if (args.length === 0) return { ___status: true, status: 200, payload: args[0] };
