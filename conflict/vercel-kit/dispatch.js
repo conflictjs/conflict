@@ -162,7 +162,7 @@ export default async function (message) {
         return status(200, {
             type: 4,
             data: {
-                content: "Hello! You can debug the following data:\n\n```json\n" + JSON.stringify({ message, commands, result }, null, 4).substring(0, 1900) + "\n```",
+                content: "Hello! You can debug the following data:\n\n```json\n" + JSON.stringify({ result }, null, 4).substring(0, 1900) + "\n```",
             },
         });
     } else {
