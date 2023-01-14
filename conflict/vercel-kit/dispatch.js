@@ -106,27 +106,25 @@ export default async function (message) {
 
 
         })
-        let code = () => {};
-        if (interaction.isCommand() && commands[interaction.commandName]) {
-            const file = './' + path.join('bundle', 'commands', commands[interaction.commandName]._filePath);
-            const fileData = await import(file);
-            let command = fileData.default;
-            code = () => command.execute(new InteractionResponse(interaction));
-        } else if (interaction.customId?.startsWith?.('!')) {
-                const [name, params] = JSON.parse(interaction.customId.substring(1));
-                code = () => new InteractionResponse(interaction).reply('ACK! ' + name + ' ' + params);
-        } else {
-            code = () => interaction.reply({ embeds: [
-                new MessageEmbed()
-                    .setColor('#ff4444')
-                    .setTitle('Command Error')
-                    .setDescription('```' + `Conflict Erorr: CommandNotFound` + '```')
-                    .setTimestamp()
-            ] });
-        }
                 try {
-                    let output = code();
-                    if (output instanceof Promise) output = await output;
+                    if (interaction.isCommand() && commands[interaction.commandName]) {
+                            const file = './' + path.join('bundle', 'commands', commands[interaction.commandName]._filePath);
+                            const fileData = await import(file);
+                            let command = fileData.default;
+                            let output = command.execute(new InteractionResponse(interaction));
+                            if (output instanceof Promise) output = await output;
+                    } else if (interaction.customId?.startsWith?.('!')) {
+                        const [name, params] = JSON.parse(interaction.customId.substring(1));
+                        await (new InteractionResponse(interaction)).reply('ACK! ' + name + ' ' + params);
+                    } else {
+                        await interaction.reply({ embeds: [
+                            new MessageEmbed()
+                                .setColor('#ff4444')
+                                .setTitle('Command Error')
+                                .setDescription('```' + `Conflict Erorr: CommandNotFound` + '```')
+                                .setTimestamp()
+                        ] });
+                    }
                 } catch (err) {
 
                     console.error(err);
