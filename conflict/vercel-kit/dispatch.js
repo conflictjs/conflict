@@ -115,7 +115,10 @@ export default async function (message) {
                         isVercel: true,
                         onReply: data => {
                             console.log({data});
-                            console.log({stringified: JSON.stringify(data)})
+                            console.log({stringified: JSON.stringify(data)});
+                            for (const key in data) {
+                                console.log(key, data[key]);
+                            }
                         if (!resolved) resolve(data);
                     }}));
                     if (output instanceof Promise) output = await output;
