@@ -3,14 +3,14 @@ import { Button, StatelessButton, ActionRow, Embed, SelectMenu, SelectOption, Te
 import View from '@conflict/beta/View';
 
 export default new Command({
-    name: 'help-new-name-2',
+    name: 'chelp',
     description: 'Get help',
     options: [],
     execute: async (command, options, utils) => {
         const buttonView = (
             <message>
                 <Embed color="#ff3333" image={{ url: "https://conflict.js.org/favicon.png" }}>
-                        <title>Hell, world!</title>
+                        <title>Hello, world!</title>
                         <description>Welcome to **Conflict**.</description>
                 </Embed>
 
@@ -27,12 +27,12 @@ export default new Command({
                     <Button onclick={(event) => {
 
                         event.modal( // Open up a popup modal with this JSX
-                            <Modal title="im a modal, duh" onSubmit={(form) => {
-                                form.respond('submitted lol. raw form responses: ' + JSON.stringify(form.values)); // Run this when it's submitted
+                            <Modal title="Modal Title" onSubmit={(form) => {
+                                form.respond('Submitted ' + JSON.stringify(form.values)); // Run this when it's submitted
                             }}>
 
                                 <ActionRow> {/* Define a row and put a text input inside of it */}
-                                    <TextInput label="im a text input" placeholder="i hold the place" variant="input" name="i_am_an_input" />
+                                    <TextInput label="Label" placeholder="Placeholder" variant="input" name="name" />
                                 </ActionRow>
 
                             </Modal>

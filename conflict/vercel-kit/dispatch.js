@@ -97,7 +97,12 @@ export default async function (message) {
         }
     
         const interaction = new InteractionType(client, data);
-    
+
+        const result = await new Promise(async (resolve, reject) => {
+        let resolved = false;
+
+
+
         if (interaction.isCommand()) {
             console.log({ commands, name: interaction.commandName });
             if (commands[interaction.commandName]) {
@@ -105,7 +110,9 @@ export default async function (message) {
                 const fileData = await import(global.__ConflictFilePrefix + file);
                 let command = fileData.default;
                 try {
-                    let output = await command.execute(new InteractionResponse(interaction));
+                    let output = await command.execute(new InteractionResponse(interaction, data => {
+                        if (!resolved) resolve(data);
+                    }));
                     if (output instanceof Promise) output = await output;
                 } catch (err) {
 
@@ -147,11 +154,14 @@ export default async function (message) {
                 ] });
             }
         }
+        if (!resolved) resolve(false);
+
+        });
 
         return status(200, {
             type: 4,
             data: {
-                content: "Hello! You can debug the following data:\n\n```json\n" + JSON.stringify({ message, commands }, null, 4).substring(0, 1900) + "\n```",
+                content: "Hello! You can debug the following data:\n\n```json\n" + JSON.stringify({ message, commands, result }, null, 4).substring(0, 1900) + "\n```",
             },
         });
     } else {

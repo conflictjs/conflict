@@ -54,7 +54,8 @@ export default class Command {
 }
 
 export class InteractionResponse {
-    constructor (interaction) {
+    constructor (interaction, onReply = () => {}) {
+        this.onReply = onReply;
         this.interaction = interaction;
         if (interaction.options) {
             let optionsArray = interaction.options.data;
@@ -137,6 +138,7 @@ export class InteractionResponse {
         if (options[0] instanceof Component) return this.view(...options);
         if (ephemeral && options[0] instanceof String) options[0] = { content: options[0], ephemeral: true };
         if (ephemeral && options[0] && options[0].toString() == '[object Object]') options[0].ephemeral = true;
+        this.onReply?.(...options);
         return (
             this.interaction.conflictThunked ?
             this.interaction.editReply(...options) :
