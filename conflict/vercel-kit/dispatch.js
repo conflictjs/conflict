@@ -98,9 +98,7 @@ export default async function (message) {
     
         const interaction = new InteractionType(client, data);
 
-        const vercelOutput = await new Promise(async (resolve, reject) => {
-        let resolved = false;
-
+        console.log({interaction})
 
 
         if (interaction.isCommand()) {
@@ -151,9 +149,9 @@ export default async function (message) {
                 ] });
             }
         }
-        if (!resolved) resolve(false);
 
-        });
+        console.log('reached end')
+
         // console.log(JSON.stringify({ vercelOutput }), null, 4);
         // return status(200, vercelOutput);
     } else {

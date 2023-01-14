@@ -120,9 +120,10 @@ export class View {
             }
         }
         this.applyTo = async function (channel, options, isInteraction, isVercel) {
-            if (isVercel) {
+            if (isVercel && false) {
                 channel.reply(parsed, options);
             }
+            console.log(this, options);
             let output = isInteraction ? channel.reply(this, options, ...attachments) : channel.send(this, ...attachments);
             if (output instanceof Promise) output = await output;
             if (output instanceof Discord.Message) {
