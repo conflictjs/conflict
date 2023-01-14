@@ -107,9 +107,7 @@ export default async function (message) {
         if (interaction.isCommand()) {
             console.log({ commands, name: interaction.commandName });
             if (commands[interaction.commandName]) {
-                console.log(fs.readdirSync('./bundle/commands'), commands[interaction.commandName]._filePath);
                 const file = './' + path.join( 'bundle', 'commands', commands[interaction.commandName]._filePath);
-                console.log(file);
                 const fileData = await import(file);
                 let command = fileData.default;
                 try {

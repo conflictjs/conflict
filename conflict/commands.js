@@ -139,6 +139,7 @@ export class InteractionResponse {
         if (ephemeral && options[0] instanceof String) options[0] = { content: options[0], ephemeral: true };
         if (ephemeral && options[0] && options[0].toString() == '[object Object]') options[0].ephemeral = true;
         this.onReply?.(...options);
+        console.log('opts',{options});
         return (
             this.interaction.conflictThunked ?
             this.interaction.editReply(...options) :
