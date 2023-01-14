@@ -98,7 +98,6 @@ export default async function (message) {
     
         const interaction = new InteractionType(client, data);
 
-        console.log({interaction})
 
 
         if (interaction.isCommand()) {
@@ -149,11 +148,6 @@ export default async function (message) {
                 ] });
             }
         }
-
-        console.log('reached end')
-
-        // console.log(JSON.stringify({ vercelOutput }), null, 4);
-        // return status(200, vercelOutput);
     } else {
         return status(200, {
             type: 4,

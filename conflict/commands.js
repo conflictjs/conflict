@@ -170,12 +170,6 @@ export class InteractionResponse {
         if (!view.custom_id) throw new Error('Missing callback');
         if (!view.title) throw new Error('Missing title');
         if (!view.components) throw new Error('Missing components');
-        if (this.vercelConfig?.isVercel) {
-            return this.vercelConfig?.onReply?.({
-                type: 7,
-                data: view
-            });
-        }
         return this.interaction.client.api.interactions(this.interaction.id, this.interaction.token).callback.post({ data: {
             type: 9,
             data: view 
@@ -183,13 +177,7 @@ export class InteractionResponse {
     }
     async view (view, options) {
         if (!(view instanceof View)) view = new View(view);
-        if (this.vercelConfig?.isVercel && false) {
-            view.applyTo({ reply: (...args) => {
-                this.vercelConfig?.onReply?.(...args);
-            }}, options, true, true);
-        } else {
-            return await view.applyTo(this.interaction, options, true);
-        }
+        return await view.applyTo(this.interaction, options, true);
     }
     privateView (view, options) {
         view.ephemeral = true;
