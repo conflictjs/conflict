@@ -144,9 +144,9 @@ export default async function (message) {
                 
         let config;
         try {
-            config = await import(global.__ConflictFilePrefix + process.cwd() + '/conflict.config.js');
+            config = await import(process.cwd() + '/conflict.config.js');
         } catch (err) {
-            return stump.error('Missing conflict.config.js');
+            return console.error('Missing conflict.config.js');
         }
         let { token, intents, errorHandler, plugins } = config.default;
         
