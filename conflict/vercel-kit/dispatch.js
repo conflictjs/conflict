@@ -50,7 +50,7 @@ function status (...args) {
 }
 
 export default async function (message) {
-    if (message.type === InteractionType.APPLICATION_COMMAND) {
+    if (message.type === InteractionType.APPLICATION_COMMAND || true) {
         const data = message;
         const client = generateClient(process.env.TOKEN);
 
@@ -103,16 +103,29 @@ export default async function (message) {
         console.log({
             cwd: process.cwd(),
             ls: fs.readdirSync(process.cwd()),
-            
+
 
         })
-        if (interaction.isCommand()) {
-            if (commands[interaction.commandName]) {
-                const file = './' + path.join('bundle', 'commands', commands[interaction.commandName]._filePath);
-                const fileData = await import(file);
-                let command = fileData.default;
+        let code = () => {};
+        if (interaction.isCommand() && commands[interaction.commandName]) {
+            const file = './' + path.join('bundle', 'commands', commands[interaction.commandName]._filePath);
+            const fileData = await import(file);
+            let command = fileData.default;
+            code = () => command.execute(new InteractionResponse(interaction));
+        } else if (interaction.customId?.startsWith?.('!')) {
+                const [name, params] = JSON.parse(interaction.customId.substring(1));
+                code = () => new InteractionResponse(interaction).reply('ACK! ' + name + ' ' + params);
+        } else {
+            code = () => interaction.reply({ embeds: [
+                new MessageEmbed()
+                    .setColor('#ff4444')
+                    .setTitle('Command Error')
+                    .setDescription('```' + `Conflict Erorr: CommandNotFound` + '```')
+                    .setTimestamp()
+            ] });
+        }
                 try {
-                    let output = await command.execute(new InteractionResponse(interaction));
+                    let output = code();
                     if (output instanceof Promise) output = await output;
                 } catch (err) {
 
@@ -144,24 +157,7 @@ export default async function (message) {
                         }
                     }
                 }
-            } else {
-                await interaction.reply({ embeds: [
-                    new MessageEmbed()
-                        .setColor('#ff4444')
-                        .setTitle('Command Error')
-                        .setDescription('```' + `Conflict Erorr: CommandNotFound` + '```')
-                        .setTimestamp()
-                ] });
-            }
         }
-    } else {
-        return status(200, {
-            type: 4,
-            data: {
-                content: `Hello! Not a command`,
-            },
-        })
-    }
 }
 
 function generateClient (token) {

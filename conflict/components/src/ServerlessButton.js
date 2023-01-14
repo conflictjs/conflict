@@ -1,6 +1,6 @@
 import { managers } from '../../state.js';
 
-export default function StatelessButton ({ style, onclick, label, children, emoji, variant, onClick }) {
+export default function ServerlessButton ({ style, onclick, label, children, emoji, variant, name, params }) {
     label = (children && children.length) ? (
         <label>{children[0]}</label>
     ) : (
@@ -51,7 +51,7 @@ export default function StatelessButton ({ style, onclick, label, children, emoj
         style,
         emoji,
         type: 2,
-        custom_id: managers.components.select('*').statelessStore(onclick)
+        custom_id: '!' + JSON.stringify([name, params])
     };
     return (
         <components_arr>
