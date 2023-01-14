@@ -9,10 +9,12 @@ import Discord from 'discord.js';
 import { REST } from '@discordjs/rest';
 import typesv9 from 'discord-api-types/v9';
 import Command from './commands.js';
+import View from './view.js';
 const { Routes } = typesv9;
 const __dirname = dirname(import.meta);
 
 global.__ConflictFilePrefix = process.platform === 'win32' ? 'file://' : '';
+global.__ConflictViewParser = View.createElement;
 const selfVersion = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
 
 if (fs.existsSync(path.join(process.cwd(), '.vercel'))) {
