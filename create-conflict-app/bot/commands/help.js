@@ -3,13 +3,9 @@ import { Button, StatelessButton, ActionRow, Embed, SelectMenu, SelectOption, Te
 import View from '@conflict/beta/View';
 
 export default new Command({
-    name: 'help',
+    name: 'help-new-name-2',
     description: 'Get help',
     options: [],
-    testing: {
-        // guildId: '921962253262155876'
-        guildId: '921962253262155876'
-    },
     execute: async (command, options, utils) => {
         const buttonView = (
             <message>

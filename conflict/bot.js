@@ -21,6 +21,7 @@ import { REST } from '@discordjs/rest'
 import typesv9 from 'discord-api-types/v9'
 const { Routes } = typesv9;
 import { getFile, cleanLines } from './utils.js'
+import CommandManager, { setGlobalCommands } from './commandManager.js'
 
 global.__ConflictFilePrefix = process.platform === 'win32' ? 'file://' : '';
 
@@ -166,9 +167,13 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
         fs.writeFileSync(path.join(process.cwd(), '.conflict', '.guilds.commands.cache'), guilds.join('^'), 'utf8');
 
-        if (!hotReload) setTimeout(async () => {
-            await rest.put(Routes.applicationCommands(client.user.id), { body: publicCommands });
-        }, 30000);
+        const manager = new CommandManager(client, stump);
+        await manager.setGlobalCommands(publicCommands);
+
+        // await setGlobalCommands(token, client.user.id, publicCommands);
+        // if (!hotReload) setTimeout(async () => {
+        //     await rest.put(Routes.applicationCommands(client.user.id), { body: publicCommands });
+        // }, 30000);
 
         if (!hotReload) for (const guild in guildCommands) {
             const commandsForGuild = guildCommands[guild];

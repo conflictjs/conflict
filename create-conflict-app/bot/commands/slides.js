@@ -5,10 +5,13 @@ import View from '@conflict/beta/View';
 export default new Command({
     name: 'slides',
     description: 'Run slides',
-    options: [],
-    testing: {
-        guildId: '921962253262155876'
-    },
+    options: [
+        {
+            "type": 3,
+            "name": "text",
+            "description": "Text to display",
+        }
+    ],
     execute: async (command, options, utils) => {
         // command.respond(
         //     <EmbedSlideshow embeds={[
