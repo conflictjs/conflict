@@ -99,7 +99,7 @@ export default async function (message) {
     
         const interaction = new InteractionType(client, data);
 
-        const result = await new Promise(async (resolve, reject) => {
+        const vercelOutput = await new Promise(async (resolve, reject) => {
         let resolved = false;
 
 
@@ -111,10 +111,12 @@ export default async function (message) {
                 const fileData = await import(file);
                 let command = fileData.default;
                 try {
-                    let output = await command.execute(new InteractionResponse(interaction, (...data) => {
-                        console.log({data})
+                    let output = await command.execute(new InteractionResponse(interaction, {
+                        isVercel: true,
+                        onReply: data => {
+                            console.log({data});
                         if (!resolved) resolve(data);
-                    }));
+                    }}));
                     if (output instanceof Promise) output = await output;
                 } catch (err) {
 
@@ -160,12 +162,7 @@ export default async function (message) {
 
         });
 
-        return status(200, {
-            type: 4,
-            data: {
-                content: "Hello! You can debug the following data:\n\n```json\n" + JSON.stringify({ result }, null, 4).substring(0, 1900) + "\n```",
-            },
-        });
+        return status(200, vercelOutput);
     } else {
         return status(200, {
             type: 4,

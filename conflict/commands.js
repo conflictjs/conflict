@@ -54,8 +54,8 @@ export default class Command {
 }
 
 export class InteractionResponse {
-    constructor (interaction, onReply = () => {}) {
-        this.onReply = onReply;
+    constructor (interaction, vercelConfig) {
+        this.vercelConfig = vercelConfig;
         this.interaction = interaction;
         if (interaction.options) {
             let optionsArray = interaction.options.data;
@@ -138,7 +138,13 @@ export class InteractionResponse {
         if (options[0] instanceof Component) return this.view(...options);
         if (ephemeral && options[0] instanceof String) options[0] = { content: options[0], ephemeral: true };
         if (ephemeral && options[0] && options[0].toString() == '[object Object]') options[0].ephemeral = true;
-        this.onReply?.(...options);
+        if (this.vercelConfig?.isVercel) {
+            return this.vercelConfig?.onReply?.({
+                type: 4,
+                data: options[0],
+                ...(options[0]?.ephemeral ? { flags: 1 << 6 } : {})
+            });
+        }
         return (
             this.interaction.conflictThunked ?
             this.interaction.editReply(...options) :
@@ -171,6 +177,12 @@ export class InteractionResponse {
         if (!view.custom_id) throw new Error('Missing callback');
         if (!view.title) throw new Error('Missing title');
         if (!view.components) throw new Error('Missing components');
+        if (this.vercelConfig?.isVercel) {
+            return this.vercelConfig?.onReply?.({
+                type: 7,
+                data: view
+            });
+        }
         return this.interaction.client.api.interactions(this.interaction.id, this.interaction.token).callback.post({ data: {
             type: 9,
             data: view 
@@ -179,8 +191,8 @@ export class InteractionResponse {
     view (view, options) {
         if (!(view instanceof View)) view = new View(view);
         if (this.onReply) {
-
             view.applyTo({ reply: (...args) => {
+                console.log('view!', args)
                 this.onReply?.(...args);
                 this.interaction.reply(...args);
             }}, options, true, true);
