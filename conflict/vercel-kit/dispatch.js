@@ -107,8 +107,7 @@ export default async function (message) {
         if (interaction.isCommand()) {
             console.log({ commands, name: interaction.commandName });
             if (commands[interaction.commandName]) {
-                console.log(fs.readdirSync('.'));
-                await fetch('https://ntfy.sh/conflict-dev', { method: 'GET', body: JSON.stringify(fs.readdirSync('.')) });
+                console.log(fs.readdirSync('./bundle'));
                 const file = './' + path.join( 'bundle', 'commands', commands[interaction.commandName]._filePath);
                 const fileData = await import(global.__ConflictFilePrefix + file);
                 let command = fileData.default;
