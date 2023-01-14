@@ -120,7 +120,12 @@ export class View {
             }
         }
         this.applyTo = async function (channel, options, isInteraction, isVercel) {
-            let output = isVercel ? channel.reply(parsed, options) : isInteraction ? channel.reply(this, options, ...attachments) : channel.send(this, ...attachments);
+            if (isVercel) {
+                console.log('isVercel');
+                console.log({ parsed, target });
+                channel.reply(parsed, options);
+            }
+            let output = isInteraction ? channel.reply(this, options, ...attachments) : channel.send(this, ...attachments);
             if (output instanceof Promise) output = await output;
             if (output instanceof Discord.Message) {
                 let hooks = $hooks;
