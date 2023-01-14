@@ -138,18 +138,6 @@ export class InteractionResponse {
         if (options[0] instanceof Component) return this.view(...options);
         if (ephemeral && options[0] instanceof String) options[0] = { content: options[0], ephemeral: true };
         if (ephemeral && options[0] && options[0].toString() == '[object Object]') options[0].ephemeral = true;
-        if (this.vercelConfig?.isVercel) {
-            return this.interaction.client.api.interactions(this.interaction.id, this.interaction.token).callback.post({ data: {
-                type: 4,
-                data: { content: options[0] },
-                ...(options[0]?.ephemeral ? { flags: 1 << 6 } : {})
-            }});
-            return this.vercelConfig?.onReply?.({
-                type: 4,
-                data: options[0],
-                ...(options[0]?.ephemeral ? { flags: 1 << 6 } : {})
-            });
-        }
         return (
             this.interaction.conflictThunked ?
             this.interaction.editReply(...options) :

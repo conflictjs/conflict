@@ -109,12 +109,7 @@ export default async function (message) {
                 const fileData = await import(file);
                 let command = fileData.default;
                 try {
-                    let output = await command.execute(new InteractionResponse(interaction, {
-                        isVercel: true,
-                        onReply: data => {
-                            if (!resolved) resolve(data);
-                        }
-                    }));
+                    let output = await command.execute(new InteractionResponse(interaction));
                     if (output instanceof Promise) output = await output;
                 } catch (err) {
 
@@ -159,8 +154,8 @@ export default async function (message) {
         if (!resolved) resolve(false);
 
         });
-        console.log(JSON.stringify({ vercelOutput }), null, 4);
-        return status(200, vercelOutput);
+        // console.log(JSON.stringify({ vercelOutput }), null, 4);
+        // return status(200, vercelOutput);
     } else {
         return status(200, {
             type: 4,
