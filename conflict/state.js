@@ -64,6 +64,7 @@ class State {
 class ComponentState extends State {
     constructor (name, type) {
         super(name, type);
+        this.statelessPath = global.__ConflictEnvironment == 'vercel' ? path.join(process.cwd(), '.stateless.cache') : path.join(process.cwd(), '.conflict', '.stateless.cache');
     }
     store (code) {
         let id = uuid();
@@ -77,18 +78,18 @@ class ComponentState extends State {
         if (this.get(id)) return queryString;
         this.set(id, code);
         let cwd = process.cwd();
-        let cache = fs.readFileSync(path.join(cwd, '.conflict', '.stateless.cache'), 'utf8');
+        let cache = fs.readFileSync(this.statelessPath, 'utf8');
         cache = cache.split('\n\n[===]\n\n').filter(segment => segment);
         let data = id + '\n' + Buffer.from(code.toString()).toString('base64');
         if (cache.includes(data)) return queryString;
         cache.push(data);
-        fs.writeFileSync(path.join(cwd, '.conflict', '.stateless.cache'), cache.join('\n\n[===]\n\n'), 'utf8')
+        fs.writeFileSync(this.statelessPath, cache.join('\n\n[===]\n\n'), 'utf8')
         return queryString;
     }
     statelessLoad () {
         let cwd = process.cwd();
-        if (!fs.existsSync(path.join(cwd, '.conflict', '.stateless.cache'))) fs.writeFileSync(path.join(cwd, '.conflict', '.stateless.cache'), '', 'utf8');
-        let cache = fs.readFileSync(path.join(cwd, '.conflict', '.stateless.cache'), 'utf8');
+        if (!fs.existsSync(this.statelessPath)) fs.writeFileSync(path.join(cwd, '.conflict', '.stateless.cache'), '', 'utf8');
+        let cache = fs.readFileSync(this.statelessPath, 'utf8');
         cache = cache.split('\n\n[===]\n\n').filter(segment => segment).map(cacheSegment => {
             let [id, code] = cacheSegment.split('\n');
             code = Buffer.from(code, 'base64').toString('utf8');

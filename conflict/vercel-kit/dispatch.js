@@ -12,6 +12,7 @@ import path from 'path';
 import Command, { InteractionResponse } from '@conflict/beta/commands';
 import View, { parseView } from '@conflict/beta/view';
 global.__ConflictViewParser = View.createElement;
+global.__ConflictEnvironment = 'vercel';
 import Discord from 'discord.js';
 const {
     AutocompleteInteraction,
@@ -97,12 +98,15 @@ export default async function (message) {
         }
     
         const interaction = new InteractionType(client, data);
+        
+        
+        console.log({
+            cwd: process.cwd(),
 
-
-
+        })
         if (interaction.isCommand()) {
             if (commands[interaction.commandName]) {
-                const file = './' + path.join( 'bundle', 'commands', commands[interaction.commandName]._filePath);
+                const file = './' + path.join('bundle', 'commands', commands[interaction.commandName]._filePath);
                 const fileData = await import(file);
                 let command = fileData.default;
                 try {
