@@ -1,6 +1,6 @@
 {
   "name": "@conflict/beta",
-  "version": "0.9.45",
+  "version": "0.9.46",
   "description": "The first and only UI framework for Discord bots",
   "main": "exports.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "deep-equal": "^2.2.0",
     "discord-api-types": "^0.29.0",
     "discord-interactions": "^3.2.0",
-    "discord.js": "^13.6.0",
+    "discord.js": "^13.8.1",
     "esm-dirname": "^0.1.1",
     "node-fetch": "^3.3.0",
     "stump.js": "^1.1.0"
