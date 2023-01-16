@@ -100,7 +100,7 @@ export class InteractionResponse {
         return this.interaction.deferReply();
     }
     editReply (...options) {
-        return this.interaction.reditReply(...options);
+        return this.interaction.editReply(...options);
     }
     deleteReply () {
         return this.interaction.deleteReply();
