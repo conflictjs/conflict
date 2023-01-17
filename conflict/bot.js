@@ -68,10 +68,10 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
     }
 
     token = token.trim();
-    
+
     if (!plugins) plugins = [];
 
-    const rest = new REST({ version: '9' }).setToken(token);
+    const rest = new REST({ version: '9' }).setToken(token.trim());
 
     const client = new Client({ intents: (intents || ["GUILD_MESSAGES"]).map(intent => Intents.FLAGS[intent] ) });
 
@@ -98,7 +98,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
         initCommands();
     });
 
-    client.login(token);
+    client.login(token.trim());
 
     async function initEvents () {
         let eventsPath = path.join(process.cwd(), '.conflict', 'build', 'events');
