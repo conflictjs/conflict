@@ -66,6 +66,9 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
             process.exit(1);
         }
     }
+
+    token = token.trim();
+    
     if (!plugins) plugins = [];
 
     const rest = new REST({ version: '9' }).setToken(token);
