@@ -64,7 +64,7 @@ const vercel = process.env.VERCEL_ENV || process.argv.includes('-vercel') || pro
             }
         }
 
-        const manager = new ShardingManager(path.join(__dirname, 'bot.js'), { token: token });
+        const manager = new ShardingManager(path.join(__dirname, 'bot.js'), { token: token.trim() });
 
         manager.on('shardCreate', shard => stump.success(`Launched shard ${shard.id}`));
         manager.spawn();
