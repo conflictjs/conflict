@@ -1,0 +1,17 @@
+{
+	"$schema": "https://json.schemastore.org/swcrc",
+	"jsc": {
+		"transform": {
+			"react": {
+				"pragma": "global.__ConflictViewParser",
+				"pragmaFrag": "DomFrag",
+				"throwIfNamespace": true,
+				"runtime": "classic"
+			}
+		},
+		"parser": {
+			"syntax": "ecmascript",
+			"jsx": true
+		}
+	}
+}

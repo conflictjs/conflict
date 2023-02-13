@@ -87,19 +87,27 @@ class ComponentState extends State {
         return queryString;
     }
     statelessLoad () {
-        let cwd = process.cwd();
-        if (!fs.existsSync(this.statelessPath)) fs.writeFileSync(path.join(cwd, '.conflict', '.stateless.cache'), '', 'utf8');
-        let cache = fs.readFileSync(this.statelessPath, 'utf8');
-        cache = cache.split('\n\n[===]\n\n').filter(segment => segment).map(cacheSegment => {
-            let [id, code] = cacheSegment.split('\n');
-            code = Buffer.from(code, 'base64').toString('utf8');
-            return { id, code };
-        });
-        for (const segment of cache) {
-            this.set(segment.id, eval(segment.code));
-        }
-        return cache;
-    }
+			let cwd = process.cwd();
+			if (!fs.existsSync(this.statelessPath))
+				fs.writeFileSync(
+					path.join(cwd, ".conflict", ".stateless.cache"),
+					"",
+					"utf8"
+				);
+			let cache = fs.readFileSync(this.statelessPath, "utf8");
+			cache = cache
+				.split("\n\n[===]\n\n")
+				.filter((segment) => segment)
+				.map((cacheSegment) => {
+					let [id, code] = cacheSegment.split("\n");
+					code = Buffer.from(code, "base64").toString("utf8");
+					return { id, code };
+				});
+			// for (const segment of cache) {
+			//     this.set(segment.id, eval(segment.code));
+			// }
+			return cache;
+		}
     fetch (url) {
         let id = decodeURIComponent(queryString('https://conflict.local/' + url, 'id'));
         return this.get(id);
