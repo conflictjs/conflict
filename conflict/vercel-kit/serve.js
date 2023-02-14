@@ -14,6 +14,10 @@ export default async function (request, response) {
     if (request.method === "POST") {
         const signature = request.headers["x-signature-ed25519"];
         const timestamp = request.headers["x-signature-timestamp"];
+        const isDiscord = request.headers["user-agent"].toLowerCase().includes('discord');
+
+        console.log(request.headers.host)
+
         const rawBody = JSON.stringify(request.body);
 
         const isValidRequest = verifyKey(
