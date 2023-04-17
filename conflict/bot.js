@@ -150,7 +150,8 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
                     description: commandData.description,
                     options: commandData.options,
                     name_localizations: commandData.name_localizations,
-                    description_localizations: commandData.description_localizations
+                    description_localizations: commandData.description_localizations,
+                    ...commandData.raw
                 });
             } else {
                 publicCommands.push({
@@ -158,7 +159,8 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
                     description: commandData.description,
                     options: commandData.options,
                     name_localizations: commandData.name_localizations,
-                    description_localizations: commandData.description_localizations
+                    description_localizations: commandData.description_localizations,
+                    ...commandData.raw
                 });
             }
         }

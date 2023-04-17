@@ -16,8 +16,6 @@ export default async function (request, response) {
         const timestamp = request.headers["x-signature-timestamp"];
         const isDiscord = request.headers["user-agent"].toLowerCase().includes('discord');
 
-        console.log(request.headers.host)
-
         const rawBody = JSON.stringify(request.body);
 
         const isValidRequest = verifyKey(

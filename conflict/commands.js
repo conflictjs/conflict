@@ -36,6 +36,7 @@ export default class Command {
         this.type = (testing && testing.guildId) ? 'guild' : 'global';
         this.meta = meta;
         this.executeFn = execute;
+        this.raw = {};
     }
     execute (command, options, utils) {
         return this.executeFn(command, options, utils);
