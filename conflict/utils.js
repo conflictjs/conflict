@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { exec as execute } from 'child_process';
 
 export function uuid () {
     let time = new Date().getTime();
@@ -70,4 +71,40 @@ export function detectFlag (args, flag, allFlags = []) {
         args.includes('-'  + ( flagLetters.includes(flag[0]) ? flag[0].toUpperCase() : flag[0] )) ||
         args.includes('--' + ( flagLetters.includes(flag[0]) ? flag[0].toUpperCase() : flag[0] ))
     );
+}
+
+class ExecOutput {
+    constructor (stdout, stderr, time, args) {
+        this.stdout = stdout;
+        this.stderr = stderr;
+        this.time = time;
+        this.args = args;
+    }
+}
+
+export function exec (...args) {
+    return new Promise((resolve, reject) => {
+        const start = performance.now();
+
+        execute(...args, (error, stdout, stderr) => {
+            if (error) return reject(error);
+
+            const end = performance.now();
+            resolve(new ExecOutput({ stdout, stderr, time: end - start, args }));
+        });
+    });
+}
+
+export function file (...paths) {
+    const prefix = process.platform === 'win32' ? 'file://' : '';
+
+    return path.join(prefix, ...paths);
+}
+
+export function attempt (fn, ...args) {
+    try {
+        return [fn(...args), null];
+    } catch (err) {
+        return [null, err];
+    }
 }

@@ -1,4 +1,4 @@
-import Command from '@conflict/beta/commands';
+import Command from 'conflict/commands';
 import welcome from '../views/welcome.js';
 
 export default new Command({

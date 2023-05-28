@@ -1,6 +1,6 @@
-import Command from '@conflict/beta/commands';
-import { Button, StatelessButton, ActionRow, Embed, SelectMenu, SelectOption, TextInput, Modal } from '@conflict/beta/components';
-import View from '@conflict/beta/View';
+import Command from 'conflict/commands';
+import { Button, StatelessButton, ActionRow, Embed, SelectMenu, SelectOption, TextInput, Modal } from 'conflict/components';
+import View from 'conflict/View';
 
 export default new Command({
     name: 'chelp',
