@@ -1,7 +1,7 @@
+import { ActionRow } from "conflict/components";
 
-
-export const name = "Demo";
-export const description = "Run demo";
+export const name = "counter";
+export const description = "Play with a counter";
 export const options = [
     {
         "type": 3,
@@ -11,13 +11,15 @@ export const options = [
 ];
 
 export default function demo ({ count, text }) {
-    
-
     return (
         <message>
-            <content>Hello</content>
+            <content>Hello! Current count: {count}. Custom text: {text}.</content>
             <ActionRow>
-                <Button onclick={() => setState()} variant={1}>Count</Button>
+                <Button onclick={() => {
+                    setState({ count: count + 1 });
+                }} variant={1}>
+                    Count
+                </Button>
             </ActionRow>
         </message>
     );
