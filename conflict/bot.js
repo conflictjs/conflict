@@ -14,7 +14,7 @@ import fs from 'fs'
 import stump from './logger.js'
 import events, { _setClient, onInteractionCreate, onDebug, onReady, onHotReload, onStartThinking } from './events.js'
 import Command, { InteractionResponse } from './commands.js'
-import View from './view.js'
+import View from './renderer/view.js'
 import State, { managers } from './state.js'
 import { REST } from '@discordjs/rest'
 // const { REST } = djsrest;

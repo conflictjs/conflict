@@ -1,4 +1,4 @@
-import View from './view.js';
+import View from './renderer/view.js';
 import logger from './logger.js';
 import Command from './commands.js';
 

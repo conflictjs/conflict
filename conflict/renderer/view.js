@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import stump from './logger.js';
+import stump from '../logger.js';
 
 export const createElement = (tag, props = {}, ...children) => {
     if (props == null) props = {};

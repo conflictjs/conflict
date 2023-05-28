@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@conflict/vercel@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@conflict/vercel/-/vercel-0.1.0.tgz"
+  integrity sha512-hnKrg6zVzh+A8uCpgp2PuAeC/e1DiVlu9+2Df8Y01DR5bL0FSsSITDiv6j8I7MMHiUC+2H76O6NTDv6QQfktVw==
+
 "@mole-inc/bin-wrapper@^8.0.1":
   version "8.0.1"
   resolved "https://registry.npmjs.org/@mole-inc/bin-wrapper/-/bin-wrapper-8.0.1.tgz"

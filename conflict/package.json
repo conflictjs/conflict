@@ -40,9 +40,9 @@
 		"@swc/core": "^1.3.35"
 	},
 	"exports": {
-		"./View": "./view.js",
-		"./view": "./view.js",
-		"./views": "./view.js",
+		"./View": "./renderer/view.js",
+		"./view": "./renderer/view.js",
+		"./views": "./renderer/view.js",
 		"./events": "./events.js",
 		"./hooks": "./hooks.js",
 		"./logger": "./logger.js",

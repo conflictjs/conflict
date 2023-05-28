@@ -1,4 +1,4 @@
-import View, { Component } from './view.js'
+import View, { Component } from './renderer/view.js'
 
 class ValueLocalizations {
     constructor (default_, localizations) {

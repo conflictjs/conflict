@@ -9,7 +9,7 @@ import Discord from 'discord.js';
 import { REST } from '@discordjs/rest';
 import typesv9 from 'discord-api-types/v9';
 import Command from './commands.js';
-import View from './view.js';
+import View from './renderer/view.js';
 const { Routes } = typesv9;
 const __dirname = dirname(import.meta);
 
