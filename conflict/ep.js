@@ -29,19 +29,33 @@ const vercel = process.env.VERCEL_ENV || process.argv.includes('-vercel') || pro
     } else if (process.argv[0] == 'build') {
         stump.info('Starting build...');
 
-        exec('npx babel bot --out-dir .conflict/build --config-file ' + path.join(__dirname, 'babel.config.js'), { cwd: process.cwd() }, async (error, stdout, stderr) => {
-            if (error) return stump.error(error);
-            stdout.trim().split('\n').filter(line => line).forEach(line => stump.info(line));
-            stderr = stderr.trim().split('\n').filter(line => line);
-            stderr.forEach(line => stump.warn(line));
-            stump.success(`Build completed with ${stderr.length} errors`);
+        exec(
+					"swc bot --out-dir .conflict/build --config-file " +
+						path.join(__dirname, ".swcrc"),
+					{ cwd: process.cwd() },
+					async (error, stdout, stderr) => {
+						if (error) return stump.error(error);
+						stdout
+							.trim()
+							.split("\n")
+							.filter((line) => line)
+							.forEach((line) => stump.info(line));
+						stderr = stderr
+							.trim()
+							.split("\n")
+							.filter((line) => line);
+						stderr.forEach((line) => stump.warn(line));
+						stump.success(`Build completed with ${stderr.length} errors`);
 
-            if (vercel) {
-                stump.info('Deploying to Vercel will disable events and only listen for commands');
-                const { finish } = await import('./vercel.js');
-                if (finish) await finish();
-            }
-        });
+						if (vercel) {
+							stump.info(
+								"Deploying to Vercel will disable events and only listen for commands"
+							);
+							const { finish } = await import("./vercel.js");
+							if (finish) await finish();
+						}
+					}
+				);
     } else {
         
         global.__ConflictENV.verbose = detectFlag(process.argv, 'verbose') || detectFlag(process.argv, 'detailed');

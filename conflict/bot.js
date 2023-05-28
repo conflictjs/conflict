@@ -43,10 +43,18 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
 (async () => {
 
-    TextChannel.prototype.view = function (view) { view.applyTo(this); };
-    DMChannel.prototype.view = function (view) { view.applyTo(this); };
-    NewsChannel.prototype.view = function (view) { view.applyTo(this); };
-    ThreadChannel.prototype.view = function (view) { view.applyTo(this); };
+    TextChannel.prototype.view = function (view) {
+			view.applyTo(this);
+		};
+		DMChannel.prototype.view = function (view) {
+			view.applyTo(this);
+		};
+		NewsChannel.prototype.view = function (view) {
+			view.applyTo(this);
+		};
+		ThreadChannel.prototype.view = function (view) {
+			view.applyTo(this);
+		};
 
     if (process.env.CONFLICT_VERBOSE) global.__ConflictENV.verbose = true;
 
@@ -100,7 +108,7 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
 
     client.login(token.trim());
 
-    async function initEvents () {
+    async function initEvents() {
         let eventsPath = path.join(process.cwd(), '.conflict', 'build', 'events');
         if (fs.existsSync(eventsPath)) {
             let files = fs.readdirSync(eventsPath);
@@ -344,23 +352,24 @@ if (!global.__ConflictENV) global.__ConflictENV = {};
         });
     }
 
-    async function init () {
-        await initEvents();
-        for (let plugin of plugins) {
-            if (typeof plugin === "string") plugin = (await plugin()).default;
-            if (plugin instanceof Promise) plugin = await plugin;
-            if (plugin && plugin.default && plugin.default instanceof Function) plugin = plugin.default;
-            plugin({
-                stump,
-                logger: stump,
-                events,
-                View,
-                State,
-                config,
-                client
-            });
-        }
-    }
+    async function init() {
+			await initEvents();
+			for (let plugin of plugins) {
+				if (typeof plugin === "string") plugin = (await plugin()).default;
+				if (plugin instanceof Promise) plugin = await plugin;
+				if (plugin && plugin.default && plugin.default instanceof Function)
+					plugin = plugin.default;
+				plugin({
+					stump,
+					logger: stump,
+					events,
+					View,
+					State,
+					config,
+					client,
+				});
+			}
+		}
 
     init();
     onHotReload(async () => {

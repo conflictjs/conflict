@@ -9,10 +9,15 @@ import { detectFlag } from '../utils.js';
 const __dirname = dirname(import.meta);
 const build = () => {
 	return new Promise((resolve, reject) => {
-		exec('npx babel bot --out-dir .conflict/build --config-file ' + path.join(__dirname, '..', 'babel.config.js'), { cwd: process.cwd() }, (error, stdout, stderr) => {
-			if (error) return reject(error);
-			resolve({ stdout, stderr });
-		});
+		exec(
+			"swc bot --out-dir .conflict/build --config-file " +
+				path.join(__dirname, "..", ".swcrc"),
+			{ cwd: process.cwd() },
+			(error, stdout, stderr) => {
+				if (error) return reject(error);
+				resolve({ stdout, stderr });
+			}
+		);
 	});
 };
 
