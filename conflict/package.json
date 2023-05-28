@@ -1,6 +1,6 @@
 {
-	"name": "@conflict/beta",
-	"version": "0.9.49",
+	"name": "conflict",
+	"version": "0.1.5",
 	"description": "The first and only UI framework for Discord bots",
 	"main": "exports.js",
 	"scripts": {
@@ -9,7 +9,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/yodalightsabr/conflict.git"
+		"url": "git+https://github.com/conflictjs/conflict.git"
 	},
 	"keywords": [
 		"conflict",
@@ -23,9 +23,9 @@
 	"author": "YodaLightsabr",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/yodalightsabr/conflict/issues"
+		"url": "https://github.com/conflictjs/conflict/issues"
 	},
-	"homepage": "https://github.com/yodalightsabr/conflict#readme",
+	"homepage": "https://github.com/conflictjs/conflict#readme",
 	"dependencies": {
 		"@discordjs/rest": "^0.3.0",
 		"deep-equal": "^2.2.0",
